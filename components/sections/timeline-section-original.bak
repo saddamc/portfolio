@@ -1,0 +1,2 @@
+"\"use client\";\n\nimport { Badge } from \"@/components/ui/badge\";\nimport { Button } from \"@/components/ui/button\";\nimport { Card } from \"@/components/ui/card\";\nimport { motion } from \"framer-motion\";\nimport { Calendar, ExternalLink, Monitor } 
+<truncated 16751 bytes>
