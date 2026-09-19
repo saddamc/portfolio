@@ -7,7 +7,7 @@ export default function Footer() {
   const socialLinks = [
     { icon: Github, href: 'https://github.com/saddamc', label: 'GitHub' },
     { icon: Linkedin, href: 'https://www.linkedin.com/in/saddam-hossain-09299535/', label: 'LinkedIn' },
-    { icon: Mail, href: "mailto:sadddam13bd@gmail.com", label: 'Twitter' },
+    { icon: Mail, href: "mailto:sadddam13bd@gmail.com", label: 'Email' },
   ];
 
   const currentYear = new Date().getFullYear();

@@ -3,11 +3,69 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import { Calendar, ExternalLink, ArrowUpRight } from "lucide-react";
+import { Calendar, ExternalLink, ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 export default function TimelineSection() {
   const projects = [
+    {
+      id: "shapla-trade",
+      title: "ShaplaTrade International",
+      subtitle: "(China-Bangladesh Cargo & Freight Courier)",
+      description:
+        "An enterprise cross-border logistics and freight forwarding platform operating the Guangzhou to Dhaka trade corridor. Features real-time air/sea shipment route tracking with 9-stage milestone progress, shipment-wise management consoles with carton reconciliation, an executive operations dashboard with visual lifecycle pipelines, automated bulk Excel rate/weight batch processors with issue validation, and commercial invoicing.",
+      image: "/shapla.png",
+      gallery: [
+        { label: "Full Showcase", image: "/shapla.png" },
+        { label: "Shipment Route Tracker", image: "/shapla-track.png" },
+        { label: "Shipment Console", image: "/shapla-shipment.png" },
+        { label: "Operations Dashboard", image: "/shapla-dashboard.png" },
+        { label: "Batch Excel Engine", image: "/shapla-batch.png" },
+        { label: "Customer Portal", image: "/shapla-home.png" },
+      ],
+      tech: ["Next.js", "React", "TypeScript", "TailwindCSS", "Route Tracking", "Shipment Console", "Excel Engine", "Air & Sea Cargo"],
+      liveUrl: "https://www.shaplatrade.com",
+      githubUrl: "https://github.com/saddamc",
+      color: "from-amber-500 via-orange-500 to-red-600",
+      year: "2026",
+      category: "Full Stack",
+    },
+    {
+      id: "alvis-car-rental",
+      title: "Alvis Rent a Car",
+      subtitle: "(Car Rental, Dispatch & Admin Dashboard)",
+      description:
+        "A full-featured car rental & chauffeur booking platform with an executive Admin Operations Panel. Features live fleet tracking (12+ vehicles), driver dispatch readiness (19+ on-duty drivers), booking pipeline & conversion analytics, interactive Google Maps route calculators, automated airport slips, and bilingual support (EN/BN).",
+      image: "/alvis.png",
+      gallery: [
+        { label: "Full Showcase", image: "/alvis.png" },
+        { label: "Admin Panel", image: "/alvis-admin.png" },
+        { label: "Map & Booking", image: "/alvis-map.png" },
+        { label: "Car Fleet", image: "/alvis-cars.png" },
+        { label: "Service Routes", image: "/alvis-routes.png" },
+      ],
+      tech: ["Next.js", "React", "TypeScript", "TailwindCSS", "Admin Dashboard", "Fleet Dispatch", "Google Maps"],
+      liveUrl: "https://alviscarbd.com",
+      githubUrl: "https://github.com/saddamc",
+      color: "from-red-500 via-rose-500 to-amber-500",
+      year: "2026",
+      category: "Web App",
+    },
+    {
+      id: "plain-stitch",
+      title: "Plain Stitch",
+      subtitle: "(Headless WordPress E-Commerce)",
+      description:
+        "A high-speed headless fashion e-commerce platform built with Next.js and WordPress REST API. Features dynamic category filtering, interactive product variant galleries, instant cart management, and seamless order checkouts.",
+      image: "/plainstitch.png",
+      tech: ["Next.js", "Headless WordPress", "WooCommerce", "TypeScript", "TailwindCSS"],
+      liveUrl: "https://www.plainstitch.net/",
+      githubUrl: "https://github.com/saddamc",
+      color: "from-blue-500 via-indigo-500 to-sky-400",
+      year: "2026",
+      category: "E-Commerce",
+    },
     {
       id: "cabro",
       title: "Cabro Car Rental",
@@ -25,11 +83,11 @@ export default function TimelineSection() {
     {
       id: "my-crypto-portfolio",
       title: "My Crypto Portfolio",
-      subtitle: "(Crypto DeFi Analytics)",
+      subtitle: "(Crypto News & Live Market Platform)",
       description:
-        "An advanced cryptocurrency portfolio tracking and analytics dashboard. Implements real-time asset tracking, glowing interactive trend charts, dynamic balance calculations, and multi-currency performance sheets.",
+        "A modern cryptocurrency news and live market tracking platform. Features real-time coin price updates (Bitcoin, Ethereum, BNB), instant asset search modals, breaking editorial feeds, and in-depth article readers.",
       image: "/crypto.png",
-      tech: ["React", "TypeScript", "Recharts", "Coingecko API", "TailwindCSS"],
+      tech: ["React", "TypeScript", "TailwindCSS", "CoinGecko API", "Redux"],
       liveUrl: "https://mycryptoportfolio.vercel.app/",
       githubUrl: "https://github.com/saddamc/my-crypto-portfolio",
       color: "from-purple-500 to-indigo-600",
@@ -51,26 +109,12 @@ export default function TimelineSection() {
       category: "Next.js",
     },
     {
-      id: "net-bazer-sports",
-      title: "NetBazer Sports",
-      subtitle: "(E-Commerce & Retail)",
-      description:
-        "A premium sports gear e-commerce platform and dashboard. Designed with stylized dynamic catalog layouts, smooth interactive shopping carts, order checkouts, and custom product sales analytics panels.",
-      image: "/sports.png",
-      tech: ["Next.js", "Redux Toolkit", "Node.js", "MongoDB", "TailwindCSS"],
-      liveUrl: "https://net-bazer.vercel.app/",
-      githubUrl: "https://github.com/saddamc/net-bazer-sports",
-      color: "from-cyan-400 to-emerald-500",
-      year: "2024",
-      category: "E-Commerce",
-    },
-    {
       id: "ecommerce-platform",
       title: "Dashboard / SaaS App",
-      subtitle: "(SaaS Analytics Portal)",
+      subtitle: "(Pet Adoption & SaaS Portal)",
       description:
-        "A modern web application featuring Firebase user authentication, custom dashboard analytics, calendar planning tables, and full checkout payment integration.",
-      image: "https://res.cloudinary.com/drtzgyetn/image/upload/v1757156003/Petco_unkdw6.jpg",
+        "A full-featured pet adoption and animal care platform with Firebase authentication, interactive adoption campaign dashboards, foster workflows, and secure Stripe payment integration.",
+      image: "/petco.png",
       tech: ["React", "Node.js", "MongoDB", "Stripe Payment", "Firebase"],
       liveUrl: "https://assignment-pets.web.app",
       githubUrl: "https://github.com/saddamc/Assignment-12-client-pets",
@@ -79,32 +123,18 @@ export default function TimelineSection() {
       category: "MERN Stack",
     },
     {
-      id: "best-machinery",
-      title: "Fareetex Machinery",
+      id: "fareetex-international",
+      title: "Fareetex International",
       subtitle: "(Industrial Garment Machinery Importer)",
       description:
         "A premium B2B industrial garments machinery sourcing and catalog platform. Features multi-category filtering, an interactive machinery technical showroom, and dynamic commercial inquiry tools.",
       image: "/Machine.png",
       tech: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion", "Shadcn UI"],
-      liveUrl: "https://bestmachinery.vercel.app",
+      liveUrl: "https://fareetexinternational.com",
       githubUrl: "https://github.com/saddamc",
       color: "from-emerald-400 to-teal-500",
       year: "2026",
       category: "Next.js",
-    },
-    {
-      id: "task-management",
-      title: "Book Catalog Portal",
-      subtitle: "(EdTech Platform)",
-      description:
-        "A comprehensive cataloging interface built using Redux Toolkit for complex state management, React Hook Form for validations, and React Router for robust client routing.",
-      image: "https://res.cloudinary.com/drtzgyetn/image/upload/v1757168029/Book_ocb8rn.jpg",
-      tech: ["React", "TypeScript", "Redux", "TailwindCSS", "Zod"],
-      liveUrl: "https://book-4-woad.vercel.app/books",
-      githubUrl: "https://github.com/saddamc/book-frontend-4",
-      color: "from-blue-400 to-cyan-500",
-      year: "2023",
-      category: "Frontend",
     },
   ];
 
@@ -253,9 +283,14 @@ export default function TimelineSection() {
 }
 
 function FullLaptopMockup({ project, priority = false }: { project: any; priority?: boolean }) {
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [translateY, setTranslateY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+
+  const hasGallery = Boolean(project.gallery && project.gallery.length > 1);
+  const currentImage = hasGallery ? project.gallery[activeImageIndex].image : project.image;
+  const currentLabel = hasGallery ? project.gallery[activeImageIndex].label : project.title;
 
   const handleMouseEnter = () => {
     if (containerRef.current && imageRef.current) {
@@ -271,6 +306,15 @@ function FullLaptopMockup({ project, priority = false }: { project: any; priorit
     setTranslateY(0);
   };
 
+  const handleSelectImage = (idx: number, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setActiveImageIndex(idx);
+    setTranslateY(0);
+  };
+
   return (
     <motion.div
       whileHover={{
@@ -280,6 +324,54 @@ function FullLaptopMockup({ project, priority = false }: { project: any; priorit
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {/* Interactive View Switcher Tabs (Inspired by tab layout with red underline indicator) */}
+      {hasGallery && (
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2 px-1">
+          <div className="flex items-center gap-1 p-1 bg-zinc-900/90 dark:bg-black/80 backdrop-blur-md rounded-xl border border-white/10 shadow-lg overflow-x-auto max-w-full scrollbar-none">
+            {project.gallery.map((item: any, idx: number) => {
+              const isActive = activeImageIndex === idx;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={(e) => handleSelectImage(idx, e)}
+                  className={cn(
+                    "relative px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 flex items-center gap-1.5 cursor-pointer select-none shrink-0 whitespace-nowrap",
+                    isActive
+                      ? "text-white bg-white/10 shadow-sm"
+                      : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "w-1.5 h-1.5 rounded-full transition-colors",
+                      isActive ? "bg-red-500 animate-pulse" : "bg-zinc-600"
+                    )}
+                  />
+                  {item.label}
+                  {/* Red underline indicator as requested in user's drawing */}
+                  {isActive && (
+                    <motion.div
+                      layoutId={`activeTab-${project.id}`}
+                      className="absolute -bottom-1 left-2 right-2 h-[2.5px] bg-gradient-to-r from-red-500 via-rose-500 to-amber-500 rounded-full shadow-[0_2px_8px_rgba(239,68,68,0.6)]"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Views Counter Badge */}
+          <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-medium text-zinc-400 bg-zinc-900/80 backdrop-blur-md border border-white/10 px-2.5 py-1 rounded-lg">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>
+              {activeImageIndex + 1} / {project.gallery.length} Views
+            </span>
+          </div>
+        </div>
+      )}
+
       <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="block relative max-w-2xl mx-auto">
         {/* MacBook Display Screen Frame */}
         <div className="relative bg-zinc-950 rounded-t-[20px] p-2.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
@@ -298,10 +390,20 @@ function FullLaptopMockup({ project, priority = false }: { project: any; priorit
               <div className="absolute inset-0 top-7 overflow-hidden">
                 <Image
                   ref={imageRef}
-                  src={project.image}
-                  alt={project.title}
+                  key={currentImage}
+                  src={currentImage}
+                  alt={`${project.title} - ${currentLabel}`}
                   width={600}
                   height={1200}
+                  onLoad={() => {
+                    if (containerRef.current && imageRef.current) {
+                      const containerHeight = containerRef.current.clientHeight;
+                      const imageHeight = imageRef.current.clientHeight;
+                      if (imageHeight > containerHeight && translateY !== 0) {
+                        setTranslateY(containerHeight - imageHeight);
+                      }
+                    }
+                  }}
                   style={{
                     transform: `translateY(${translateY}px)`,
                     transition: "transform 4s cubic-bezier(0.43, 0.13, 0.23, 0.96)"
@@ -313,21 +415,72 @@ function FullLaptopMockup({ project, priority = false }: { project: any; priorit
                 />
               </div>
 
-
-
               {/* Browser Header Bar */}
-              <div className="absolute top-0 left-0 right-0 h-7 bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center px-4 z-30">
-                <div className="flex space-x-1.5">
+              <div className="absolute top-0 left-0 right-0 h-7 bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-3 z-30">
+                <div className="flex space-x-1.5 items-center">
                   <div className="w-2 h-2 bg-red-500 rounded-full" />
                   <div className="w-2 h-2 bg-yellow-500 rounded-full" />
                   <div className="w-2 h-2 bg-green-500 rounded-full" />
                 </div>
-                <div className="flex-1 mx-4 truncate text-center">
-                  <span className="text-[9px] text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-950 rounded px-3 py-0.5 border border-zinc-200 dark:border-zinc-800 inline-block truncate max-w-[200px]">
+                <div className="mx-2 truncate text-center flex-1 max-w-[240px]">
+                  <span className="text-[9px] text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-950 rounded px-2.5 py-0.5 border border-zinc-200 dark:border-zinc-800 inline-block truncate max-w-full">
                     {project.liveUrl}
                   </span>
                 </div>
+                {hasGallery && (
+                  <span className="text-[9px] font-semibold text-rose-500 dark:text-rose-400 bg-rose-500/10 dark:bg-rose-500/15 px-2 py-0.5 rounded border border-rose-500/20 whitespace-nowrap">
+                    {currentLabel}
+                  </span>
+                )}
               </div>
+
+              {/* In-Mockup Left/Right Quick View Controls */}
+              {hasGallery && (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleSelectImage((activeImageIndex - 1 + project.gallery.length) % project.gallery.length);
+                    }}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-7 h-7 rounded-full bg-black/75 hover:bg-black text-white backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 border border-white/20 hover:scale-110 shadow-lg cursor-pointer"
+                    aria-label="Previous view"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleSelectImage((activeImageIndex + 1) % project.gallery.length);
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-7 h-7 rounded-full bg-black/75 hover:bg-black text-white backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 border border-white/20 hover:scale-110 shadow-lg cursor-pointer"
+                    aria-label="Next view"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+
+                  {/* Dot Indicators at the bottom */}
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 px-2 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 opacity-75 group-hover:opacity-100 transition-opacity">
+                    {project.gallery.map((_: any, idx: number) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={(e) => handleSelectImage(idx, e)}
+                        className={cn(
+                          "transition-all duration-300 rounded-full cursor-pointer",
+                          activeImageIndex === idx
+                            ? "w-3.5 h-1.5 bg-red-500"
+                            : "w-1.5 h-1.5 bg-white/40 hover:bg-white/70"
+                        )}
+                        aria-label={`View ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

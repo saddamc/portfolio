@@ -1,50 +1,56 @@
 "use client";
 
-import { motion, useMotionValue } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function CustomCursor() {
   const [cursorType, setCursorType] = useState<"default" | "hover" | "drag" | "view">("default");
   const [isVisible, setIsVisible] = useState(false);
   const [isInHero, setIsInHero] = useState(true);
 
-  // Raw mouse coordinates
-  const mouseX = useMotionValue(-100);
-  const mouseY = useMotionValue(-100);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const isInsideWindow = useRef(false);
 
   useEffect(() => {
     // Detect touch devices and disable custom cursor
     const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
     if (isTouchDevice) return;
 
-    setIsVisible(true);
+    const checkHeroSection = () => {
+      const inHero = window.scrollY < window.innerHeight - 80;
+      setIsInHero((prev) => (prev !== inHero ? inHero : prev));
+    };
 
+    checkHeroSection();
+
+    // 0ms Latency Direct Hardware Cursor Movement (ZERO Spring Lag)
     const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+      if (!isInsideWindow.current) {
+        isInsideWindow.current = true;
+        setIsVisible(true);
+      }
 
-      // Check if viewport scroll is less than the screen height (Hero Section)
-      setIsInHero(window.scrollY < window.innerHeight - 80);
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      }
     };
 
     const handleScroll = () => {
-      // Recheck boundary position on scrolling
-      setIsInHero(window.scrollY < window.innerHeight - 80);
+      checkHeroSection();
+    };
+
+    const handleResize = () => {
+      checkHeroSection();
     };
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!target) return;
 
-      const isClickable = 
-        target.closest("a") || 
-        target.closest("button") || 
-        target.closest(".magnetic") || 
-        target.closest("[role='button']") ||
-        window.getComputedStyle(target).cursor === "pointer";
-
-      const isDraggableElement = target.closest(".cursor-grab") || target.closest(".active\\:cursor-grabbing");
-      const isCardElement = target.closest(".journey-card") || target.closest(".skill-card-wrapper") || target.closest("[data-cursor='view']");
+      const isClickable = target.closest(
+        "a, button, [role='button'], select, input, textarea, .magnetic, .cursor-pointer"
+      );
+      const isDraggableElement = target.closest(".cursor-grab, .active\\:cursor-grabbing");
+      const isCardElement = target.closest(".journey-card, .skill-card-wrapper, [data-cursor='view']");
 
       if (isDraggableElement) {
         setCursorType("drag");
@@ -58,29 +64,36 @@ export default function CustomCursor() {
     };
 
     const handleMouseLeaveWindow = () => {
+      isInsideWindow.current = false;
       setIsVisible(false);
     };
 
-    const handleMouseEnterWindow = () => {
+    const handleMouseEnterWindow = (e: MouseEvent) => {
+      isInsideWindow.current = true;
       setIsVisible(true);
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("resize", handleResize, { passive: true });
+    window.addEventListener("mouseover", handleMouseOver, { passive: true });
     document.addEventListener("mouseleave", handleMouseLeaveWindow);
     document.addEventListener("mouseenter", handleMouseEnterWindow);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
       window.removeEventListener("mouseover", handleMouseOver);
       document.removeEventListener("mouseleave", handleMouseLeaveWindow);
       document.removeEventListener("mouseenter", handleMouseEnterWindow);
     };
-  }, [mouseX, mouseY]);
+  }, []);
 
-  // Toggle class on body to conditionally hide browser pointer only in Hero Section
+  // Toggle class on body to hide browser pointer inside Hero Section
   useEffect(() => {
     const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
     if (isTouchDevice) return;
@@ -96,41 +109,31 @@ export default function CustomCursor() {
     };
   }, [isInHero, isVisible]);
 
-  if (!isVisible || !isInHero) return null;
-
-  const dotVariants = {
-    default: {
-      scale: 1,
-      backgroundColor: "#000000",
-    },
-    hover: {
-      scale: 1.25,
-      backgroundColor: "#000000",
-    },
-    drag: {
-      scale: 0.85,
-      backgroundColor: "#000000",
-    },
-    view: {
-      scale: 0.85,
-      backgroundColor: "#000000",
-    }
-  };
+  if (!isInHero) return null;
 
   return (
     <>
-      {/* 1. Pure Matte Black Circle Cursor (30px diameter rounded black circle, no border) */}
-      <motion.div
-        className="fixed top-0 left-0 w-[30px] h-[30px] rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2"
+      {/* Zero-latency Hardware Matte Black Circle Cursor */}
+      <div
+        ref={cursorRef}
+        className={`fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform transition-opacity duration-150 ${
+          isVisible ? "opacity-100" : "opacity-0"
+        }`}
         style={{
-          x: mouseX,
-          y: mouseY,
+          transform: "translate3d(-100px, -100px, 0)",
         }}
-        variants={dotVariants}
-        animate={cursorType}
-        transition={{ type: "spring", stiffness: 500, damping: 28 }}
-      />
-      
+      >
+        <div
+          className={`-translate-x-1/2 -translate-y-1/2 rounded-full bg-black transition-transform duration-150 ease-out shadow-[0_2px_10px_rgba(0,0,0,0.35)] ${
+            cursorType === "hover"
+              ? "w-[36px] h-[36px] scale-110"
+              : cursorType === "drag" || cursorType === "view"
+              ? "w-[26px] h-[26px] scale-90"
+              : "w-[30px] h-[30px] scale-100"
+          }`}
+        />
+      </div>
+
       {/* Hide native browser cursor inside Hero section only */}
       <style jsx global>{`
         @media (pointer: fine) {
@@ -140,7 +143,7 @@ export default function CustomCursor() {
           body.hide-native-cursor select,
           body.hide-native-cursor input,
           body.hide-native-cursor textarea,
-          body.hide-native-cursor [role='button'],
+          body.hide-native-cursor [role="button"],
           body.hide-native-cursor .magnetic,
           body.hide-native-cursor .cursor-pointer {
             cursor: none !important;

@@ -10,6 +10,72 @@ import { cn } from '@/lib/utils';
 // Ported and enhanced project data from Latest Works
 const projects = [
   {
+    id: 'shapla-trade',
+    title: 'ShaplaTrade International',
+    subtitle: 'China-Bangladesh Cargo & Freight Courier',
+    category: 'Full Stack',
+    description:
+      'An enterprise cross-border logistics and freight forwarding platform operating the Guangzhou to Dhaka trade corridor. Features real-time air/sea shipment route tracking with 9-stage milestone progress, shipment-wise management consoles with carton reconciliation, an executive operations dashboard with visual lifecycle pipelines, automated bulk Excel rate/weight batch processors with issue validation, and commercial invoicing.',
+    image: '/shapla.png',
+    tech: ['Next.js', 'React', 'TypeScript', 'TailwindCSS', 'Route Tracking', 'Shipment Console', 'Excel Engine', 'Air & Sea Cargo'],
+    liveUrl: 'https://www.shaplatrade.com',
+  },
+  {
+    id: 'alvis-car-rental',
+    title: 'Alvis Rent a Car',
+    subtitle: 'Car Rental, Dispatch & Admin Dashboard',
+    category: 'Full Stack',
+    description:
+      'A full-featured car rental & chauffeur booking platform with an executive Admin Operations Panel. Features live fleet tracking (12+ vehicles), driver dispatch readiness (19+ on-duty drivers), booking pipeline & conversion analytics, interactive Google Maps route calculators, automated airport slips, and bilingual support (EN/BN).',
+    image: '/alvis.png',
+    tech: ['Next.js', 'React', 'TypeScript', 'TailwindCSS', 'Admin Dashboard', 'Fleet Dispatch', 'Google Maps'],
+    liveUrl: 'https://alviscarbd.com',
+  },
+  {
+    id: 'plain-stitch',
+    title: 'Plain Stitch',
+    subtitle: 'Headless WordPress E-Commerce',
+    category: 'Full Stack',
+    description:
+      'A high-speed headless fashion e-commerce platform built with Next.js and WordPress REST API. Features dynamic category filtering, interactive product variant galleries, instant cart management, and seamless order checkouts.',
+    image: '/plainstitch.png',
+    tech: ['Next.js', 'Headless WordPress', 'WooCommerce', 'TypeScript', 'TailwindCSS'],
+    liveUrl: 'https://www.plainstitch.net/',
+  },
+  {
+    id: 'fareetex-international',
+    title: 'Fareetex International',
+    subtitle: 'Industrial Garment Machinery Importer',
+    category: 'Full Stack',
+    description:
+      'A premium B2B industrial garments machinery sourcing and catalog platform. Features multi-category filtering, an interactive machinery technical showroom, and dynamic commercial inquiry tools.',
+    image: '/Machine.png',
+    tech: ['Next.js', 'TypeScript', 'TailwindCSS', 'Framer Motion', 'Shadcn UI'],
+    liveUrl: 'https://fareetexinternational.com',
+  },
+  {
+    id: 'petco-platform',
+    title: 'Dashboard / SaaS App',
+    subtitle: 'Pet Adoption & SaaS Portal',
+    category: 'Full Stack',
+    description:
+      'A full-featured pet adoption and animal care platform with Firebase authentication, interactive adoption campaign dashboards, foster workflows, and secure Stripe payment integration.',
+    image: '/petco.png',
+    tech: ['React', 'Node.js', 'MongoDB', 'Stripe Payment', 'Firebase'],
+    liveUrl: 'https://assignment-pets.web.app',
+  },
+  {
+    id: 'my-crypto-portfolio',
+    title: 'My Crypto Portfolio',
+    subtitle: 'Crypto News & Live Market Platform',
+    category: 'Full Stack',
+    description:
+      'A modern cryptocurrency news and live market tracking platform. Features real-time coin price updates (Bitcoin, Ethereum, BNB), instant asset search modals, breaking editorial feeds, and in-depth article readers.',
+    image: '/crypto.png',
+    tech: ['React', 'TypeScript', 'TailwindCSS', 'CoinGecko API', 'Redux'],
+    liveUrl: 'https://mycryptoportfolio.vercel.app/',
+  },
+  {
     id: 'harigurus',
     title: 'Harigurus',
     subtitle: 'Event Booking',

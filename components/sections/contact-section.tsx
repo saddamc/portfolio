@@ -98,8 +98,7 @@ export default function ContactSection() {
 
   return (
     <section id="contact" className="py-20 bg-background relative overflow-hidden">
-      {/* <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8"> */}
-      <div id="contact" className="py-20 px-4 sm:px-6 lg:px-8">
+      <div className="py-20 px-4 sm:px-6 lg:px-8">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(99,102,241,0.1),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(168,85,247,0.1),transparent_50%)]" />
@@ -142,11 +141,11 @@ export default function ContactSection() {
                   <feature.icon className="h-8 w-8 text-white" />
                 </div>
                 <h3
-                  className="text-xl font-bold mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300 text-gray-900 "
+                  className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300"
                 >
                   {feature.title}
                 </h3>
-                <p className="leading-relaxed" style={{ color: "#161d26" }}>
+                <p className="leading-relaxed text-gray-700 dark:text-gray-300">
                   {feature.description}
                 </p>
               </Card>

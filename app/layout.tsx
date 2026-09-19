@@ -90,7 +90,7 @@ export default function RootLayout({
     "name": "Saddam Hossain",
     "jobTitle": "Full Stack Developer",
     "description": "Full Stack Developer specializing in React, Next.js, and modern web technologies.",
-    "url": "https://book-4-woad.vercel.app",
+    "url": "https://saddambhossain.dev",
     "sameAs": [
       "https://github.com/saddamc",
       "https://www.linkedin.com/in/saddam-hossain-09299535/",

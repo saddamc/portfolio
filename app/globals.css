@@ -587,3 +587,42 @@
 
 
 /* Card CSS */
+
+/* Butterfly 3D Flight & Anatomical Wing Physics */
+.butterfly-container {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.butterfly-wrapper {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.butterfly-3d {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.butterfly-wing-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50.42%;
+  height: 100%;
+  transform-origin: 100% 50%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.butterfly-wing-right {
+  position: absolute;
+  top: 0;
+  left: 49.58%;
+  width: 50.42%;
+  height: 100%;
+  transform-origin: 0% 50%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
