@@ -2,8 +2,8 @@ import { ImageResponse } from 'next/og'
 
 // Image metadata
 export const size = {
-  width: 32,
-  height: 32,
+  width: 192,
+  height: 192,
 }
 export const contentType = 'image/png'
 
@@ -24,8 +24,8 @@ export default function Icon() {
         }}
       >
         <svg
-          width="18"
-          height="18"
+          width="128"
+          height="128"
           viewBox="0 0 24 24"
           fill="none"
           stroke="#22d3ee" // cyan-400
