@@ -7,9 +7,15 @@ interface MagneticProps {
   children: React.ReactElement;
   range?: number;
   strength?: number;
+  className?: string;
 }
 
-export default function Magnetic({ children, range = 60, strength = 0.35 }: MagneticProps) {
+export default function Magnetic({
+  children,
+  range = 60,
+  strength = 0.35,
+  className = "inline-block",
+}: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -46,7 +52,7 @@ export default function Magnetic({ children, range = 60, strength = 0.35 }: Magn
       onMouseLeave={handleMouseLeave}
       animate={{ x: position.x, y: position.y }}
       transition={{ type: "spring", stiffness: 120, damping: 12, mass: 0.1 }}
-      className="inline-block"
+      className={className}
     >
       {React.cloneElement(children, {
         className: `${children.props.className || ""} select-none`,

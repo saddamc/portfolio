@@ -26,6 +26,8 @@ const nextConfig = {
   ],
    // Enable modern image formats
    formats: ['image/webp', 'image/avif'],
+   // Whitelist custom image qualities for high-definition hero assets
+   qualities: [75, 95],
    // Optimize unoptimized images as well
    unoptimized: false,
  },

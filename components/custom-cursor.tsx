@@ -6,8 +6,15 @@ export default function CustomCursor() {
   const [cursorType, setCursorType] = useState<"default" | "hover" | "drag" | "view">("default");
   const [isVisible, setIsVisible] = useState(false);
   const [isInHero, setIsInHero] = useState(true);
+  const [isPressed, setIsPressed] = useState(false);
 
-  const cursorRef = useRef<HTMLDivElement>(null);
+  // Exact hardware pointer container (0ms latency precision point)
+  const dotRef = useRef<HTMLDivElement>(null);
+  // Smooth fluid trailing frosted glass ring container
+  const ringRef = useRef<HTMLDivElement>(null);
+
+  const mousePos = useRef({ x: -100, y: -100 });
+  const ringPos = useRef({ x: -100, y: -100 });
   const isInsideWindow = useRef(false);
 
   useEffect(() => {
@@ -22,17 +29,41 @@ export default function CustomCursor() {
 
     checkHeroSection();
 
-    // 0ms Latency Direct Hardware Cursor Movement (ZERO Spring Lag)
+    let rafId = 0;
+
+    // Smooth fluid follower loop for the glass ring (60-144fps GPU lerp)
+    const renderFollower = () => {
+      ringPos.current.x += (mousePos.current.x - ringPos.current.x) * 0.22;
+      ringPos.current.y += (mousePos.current.y - ringPos.current.y) * 0.22;
+
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0)`;
+      }
+
+      rafId = requestAnimationFrame(renderFollower);
+    };
+
+    rafId = requestAnimationFrame(renderFollower);
+
+    // 0ms Instantaneous Hardware tracking for the central precision point
     const handleMouseMove = (e: MouseEvent) => {
+      mousePos.current.x = e.clientX;
+      mousePos.current.y = e.clientY;
+
       if (!isInsideWindow.current) {
         isInsideWindow.current = true;
+        ringPos.current.x = e.clientX;
+        ringPos.current.y = e.clientY;
         setIsVisible(true);
       }
 
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
       }
     };
+
+    const handleMouseDown = () => setIsPressed(true);
+    const handleMouseUp = () => setIsPressed(false);
 
     const handleScroll = () => {
       checkHeroSection();
@@ -71,12 +102,37 @@ export default function CustomCursor() {
     const handleMouseEnterWindow = (e: MouseEvent) => {
       isInsideWindow.current = true;
       setIsVisible(true);
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      mousePos.current.x = e.clientX;
+      mousePos.current.y = e.clientY;
+      ringPos.current.x = e.clientX;
+      ringPos.current.y = e.clientY;
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      }
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
       }
     };
 
+    const handleDragStart = (e: DragEvent) => {
+      e.preventDefault();
+    };
+
+    const handleSelectStart = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
+      e.preventDefault();
+    };
+
+    window.addEventListener("dragstart", handleDragStart);
+    document.addEventListener("dragstart", handleDragStart);
+    window.addEventListener("selectstart", handleSelectStart);
+    document.addEventListener("selectstart", handleSelectStart);
+
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleResize, { passive: true });
     window.addEventListener("mouseover", handleMouseOver, { passive: true });
@@ -84,7 +140,15 @@ export default function CustomCursor() {
     document.addEventListener("mouseenter", handleMouseEnterWindow);
 
     return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("dragstart", handleDragStart);
+      document.removeEventListener("dragstart", handleDragStart);
+      window.removeEventListener("selectstart", handleSelectStart);
+      document.removeEventListener("selectstart", handleSelectStart);
+
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mouseover", handleMouseOver);
@@ -93,18 +157,21 @@ export default function CustomCursor() {
     };
   }, []);
 
-  // Toggle class on body to hide browser pointer inside Hero Section
+  // Toggle class on html and body to universally hide browser pointer inside Hero Section
   useEffect(() => {
     const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
     if (isTouchDevice) return;
 
     if (isInHero && isVisible) {
+      document.documentElement.classList.add("hide-native-cursor");
       document.body.classList.add("hide-native-cursor");
     } else {
+      document.documentElement.classList.remove("hide-native-cursor");
       document.body.classList.remove("hide-native-cursor");
     }
 
     return () => {
+      document.documentElement.classList.remove("hide-native-cursor");
       document.body.classList.remove("hide-native-cursor");
     };
   }, [isInHero, isVisible]);
@@ -113,10 +180,10 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Zero-latency Hardware Matte Black Circle Cursor */}
+      {/* 1. Fluid Aura Ring (Organic Follower - Pure GPU transform, NO backdrop-blur to prevent Skia compositor tile drops) */}
       <div
-        ref={cursorRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform transition-opacity duration-150 ${
+        ref={ringRef}
+        className={`fixed top-0 left-0 pointer-events-none z-[9998] will-change-transform transition-opacity duration-200 select-none ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}
         style={{
@@ -124,32 +191,38 @@ export default function CustomCursor() {
         }}
       >
         <div
-          className={`-translate-x-1/2 -translate-y-1/2 rounded-full bg-black transition-transform duration-150 ease-out shadow-[0_2px_10px_rgba(0,0,0,0.35)] ${
-            cursorType === "hover"
-              ? "w-[36px] h-[36px] scale-110"
+          className={`-translate-x-1/2 -translate-y-1/2 rounded-full border transition-all duration-200 ease-out select-none ${
+            isPressed
+              ? "w-7 h-7 scale-90 border-teal-400 bg-teal-400/25"
+              : cursorType === "hover"
+              ? "w-11 h-11 border-teal-400/90 bg-teal-400/20 scale-110"
               : cursorType === "drag" || cursorType === "view"
-              ? "w-[26px] h-[26px] scale-90"
-              : "w-[30px] h-[30px] scale-100"
+              ? "w-10 h-10 border-cyan-400/80 bg-cyan-400/15 scale-105"
+              : "w-8 h-8 border-teal-400/40 bg-teal-400/5 scale-100"
           }`}
         />
       </div>
 
-      {/* Hide native browser cursor inside Hero section only */}
-      <style jsx global>{`
-        @media (pointer: fine) {
-          body.hide-native-cursor,
-          body.hide-native-cursor a,
-          body.hide-native-cursor button,
-          body.hide-native-cursor select,
-          body.hide-native-cursor input,
-          body.hide-native-cursor textarea,
-          body.hide-native-cursor [role="button"],
-          body.hide-native-cursor .magnetic,
-          body.hide-native-cursor .cursor-pointer {
-            cursor: none !important;
-          }
-        }
-      `}</style>
+      {/* 2. Zero-Latency Luminous Precision Dot (Instant Click Center) */}
+      <div
+        ref={dotRef}
+        className={`fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform transition-opacity duration-150 select-none ${
+          isVisible ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          transform: "translate3d(-100px, -100px, 0)",
+        }}
+      >
+        <div
+          className={`-translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-150 ease-out select-none ${
+            isPressed
+              ? "w-2 h-2 scale-75 bg-teal-200 shadow-[0_0_12px_#2dd4bf]"
+              : cursorType === "hover"
+              ? "w-2 h-2 scale-125 bg-cyan-200 shadow-[0_0_14px_#22d3ee]"
+              : "w-1.5 h-1.5 bg-teal-300 dark:bg-cyan-300 shadow-[0_0_8px_#14b8a6]"
+          }`}
+        />
+      </div>
     </>
   );
 }

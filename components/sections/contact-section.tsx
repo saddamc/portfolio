@@ -19,7 +19,7 @@ import {
   Star,
   Zap,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const specialFeatures = [
   {
@@ -96,8 +96,26 @@ export default function ContactSection() {
     }
   };
 
+  useEffect(() => {
+    const scrollToConnect = () => {
+      const hash = window.location.hash;
+      if (hash === "#lets-connect" || hash === "#contact") {
+        setTimeout(() => {
+          const section = document.getElementById("lets-connect");
+          if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 150);
+      }
+    };
+
+    scrollToConnect();
+    window.addEventListener("hashchange", scrollToConnect);
+    return () => window.removeEventListener("hashchange", scrollToConnect);
+  }, []);
+
   return (
-    <section id="contact" className="py-20 bg-background relative overflow-hidden">
+    <section id="why-choose-me" className="py-20 bg-background relative overflow-hidden">
       <div className="py-20 px-4 sm:px-6 lg:px-8">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(99,102,241,0.1),transparent_50%)]" />
@@ -124,33 +142,42 @@ export default function ContactSection() {
             </p>
           </motion.div>
 
-          {/* ! */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          {/* Feature Cards with stagger entrance */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16"
+          >
             {specialFeatures.map((feature, index) => (
-              <Card
+              <motion.div
                 key={index}
-                // initial={{ opacity: 0, y: 50 }}
-                // whileInView={{ opacity: 1, y: 0 }}
-                // transition={{ duration: 0.8, delay: index * 0.1 }}
-                // viewport={{ once: true }}
-                className="contactSection h-full p-6 text-foreground transition-shadow duration-300"
+                variants={{
+                  hidden: { opacity: 0, y: 40 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+                }}
               >
-                <div
-                  className={`inline-flex p-4 rounded-full bg-gradient-to-r ${feature.color} mb-4 group-hover:scale-110 transition-transform duration-300`}
+                <Card
+                  className="contactSection h-full p-6 text-foreground transition-shadow duration-300"
                 >
-                  <feature.icon className="h-8 w-8 text-white" />
-                </div>
-                <h3
-                  className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300"
-                >
-                  {feature.title}
-                </h3>
-                <p className="leading-relaxed text-gray-700 dark:text-gray-300">
-                  {feature.description}
-                </p>
-              </Card>
+                  <div
+                    className={`inline-flex p-4 rounded-full bg-gradient-to-r ${feature.color} mb-4 group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    <feature.icon className="h-8 w-8 text-white" />
+                  </div>
+                  <h3
+                    className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300"
+                  >
+                    {feature.title}
+                  </h3>
+                  <p className="leading-relaxed text-gray-700 dark:text-gray-300">
+                    {feature.description}
+                  </p>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Call to Action */}
           <motion.div
@@ -193,7 +220,10 @@ export default function ContactSection() {
           </motion.div>
         </div>
       </div>
-      <div id="lets-connect" className="max-w-6xl mx-auto">
+
+      {/* Target Anchor for both contact & lets-connect */}
+      <div id="contact" className="scroll-mt-32" />
+      <div id="lets-connect" className="max-w-6xl mx-auto scroll-mt-32">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

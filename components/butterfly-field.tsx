@@ -298,6 +298,8 @@ export default function ButterflyField() {
     let containerLeft = 0;
     let containerTop = 0;
 
+    let isInitialized = false;
+
     const updateBounds = () => {
       const rect = container.getBoundingClientRect();
       width = rect.width;
@@ -307,6 +309,15 @@ export default function ButterflyField() {
       if (canvas) {
         canvas.width = width;
         canvas.height = height;
+      }
+
+      // Convert initial percentages to absolute pixel coordinates ONCE ONLY!
+      if (!isInitialized && width > 0 && height > 0) {
+        butterflies.forEach((b) => {
+          b.x = (b.x / 100) * width;
+          b.y = (b.y / 100) * height;
+        });
+        isInitialized = true;
       }
     };
 
@@ -400,11 +411,6 @@ export default function ButterflyField() {
         const rightWing = rightWingRefs.current[index];
         if (!wrapper || !unit || !leftWing || !rightWing) return;
 
-        // Convert initial percentages to absolute pixel coordinates
-        if (butterfly.x <= 100) {
-          butterfly.x = (butterfly.x / 100) * width;
-          butterfly.y = (butterfly.y / 100) * height;
-        }
 
         const dx = butterfly.x - predictedMouseX;
         const dy = butterfly.y - predictedMouseY;
@@ -682,39 +688,70 @@ export default function ButterflyField() {
            * 3. Prevents top/bottom corner stalling or heading spin loops
            */
 
-          // WhatsApp Button Avoidance Bubble (bottom-right corner ~ 140px)
+          // WhatsApp Button Avoidance Bubble (bottom-right corner ~ 150px)
           const waDist = Math.hypot(butterfly.x - (width - 45), butterfly.y - (height - 45));
-          if (waDist < 140) {
-            const pushAngle = Math.atan2(height * 0.55 - butterfly.y, width * 0.6 - butterfly.x);
+          if (waDist < 150) {
+            const pushAngle = Math.atan2(height * 0.5 - butterfly.y, width * 0.55 - butterfly.x);
             let dAngle = pushAngle - butterfly.wanderAngle;
             dAngle = ((dAngle + Math.PI) % (Math.PI * 2)) - Math.PI;
-            butterfly.wanderAngle += dAngle * 0.2 * dt;
+            butterfly.wanderAngle += dAngle * 0.22 * dt;
             butterfly.vx += Math.cos(pushAngle) * 0.45 * dt;
             butterfly.vy += Math.sin(pushAngle) * 0.45 * dt;
           }
 
-          // Full-Screen Boundary Margins (Allows full left-to-right roaming!)
-          const padX = 55;
-          const padY = 55;
+          /*
+           * ===================================================================
+           * ORGANIC BOUNDARY SOFT-STEERING (PREVENTS LEFT-EDGE VANISHING / STUCK)
+           * ===================================================================
+           * 1. Generous 160px soft-buffer on left edge to gracefully bank rightward
+           * 2. Smoothly aligns wanderAngle towards open screen center
+           * 3. Wing-safe cushion so wings are never cut off by overflow-hidden
+           */
+          const padLeft = 160;
+          const padRight = 140;
+          const padTop = 110;
+          const padBottom = 130;
 
-          let steerX = 0;
-          let steerY = 0;
-
-          if (butterfly.x < padX) steerX = (padX - butterfly.x) / padX;
-          else if (butterfly.x > width - padX) steerX = -(butterfly.x - (width - padX)) / padX;
-
-          if (butterfly.y < padY) steerY = (padY - butterfly.y) / padY;
-          else if (butterfly.y > height - padY) steerY = -(butterfly.y - (height - padY)) / padY;
-
-          if (steerX !== 0 || steerY !== 0) {
-            const inwardAngle = Math.atan2(steerY, steerX);
-            let dAngle = inwardAngle - butterfly.wanderAngle;
+          // Left border aerodynamic curve (turns smoothly rightward into meadow)
+          if (butterfly.x < padLeft) {
+            const tLeft = (padLeft - butterfly.x) / padLeft;
+            const targetRight = (Math.sin(butterfly.phase + butterfly.x * 0.05) * 0.35); // -20° to +20° rightward
+            let dAngle = targetRight - butterfly.wanderAngle;
             dAngle = ((dAngle + Math.PI) % (Math.PI * 2)) - Math.PI;
-            // Smooth natural turn towards screen interior
-            butterfly.wanderAngle += dAngle * 0.14 * dt;
+            butterfly.wanderAngle += dAngle * (0.16 + tLeft * 0.25) * dt;
+            butterfly.vx += tLeft * 0.42 * dt;
+            if (butterfly.vx < 0) {
+              butterfly.vx *= (1 - 0.15 * tLeft * dt);
+            }
+          } else if (butterfly.x > width - padRight) {
+            const tRight = (butterfly.x - (width - padRight)) / padRight;
+            const targetLeft = Math.PI + (Math.sin(butterfly.phase + butterfly.x * 0.05) * 0.35);
+            let dAngle = targetLeft - butterfly.wanderAngle;
+            dAngle = ((dAngle + Math.PI) % (Math.PI * 2)) - Math.PI;
+            butterfly.wanderAngle += dAngle * (0.16 + tRight * 0.25) * dt;
+            butterfly.vx -= tRight * 0.42 * dt;
+            if (butterfly.vx > 0) {
+              butterfly.vx *= (1 - 0.15 * tRight * dt);
+            }
+          }
 
-            butterfly.vx += steerX * 0.22 * dt;
-            butterfly.vy += steerY * 0.22 * dt;
+          // Vertical boundary curves
+          if (butterfly.y < padTop) {
+            const tTop = (padTop - butterfly.y) / padTop;
+            const targetDown = Math.PI * 0.5 + (Math.random() - 0.5) * 0.4;
+            let dAngle = targetDown - butterfly.wanderAngle;
+            dAngle = ((dAngle + Math.PI) % (Math.PI * 2)) - Math.PI;
+            butterfly.wanderAngle += dAngle * (0.14 + tTop * 0.2) * dt;
+            butterfly.vy += tTop * 0.35 * dt;
+            if (butterfly.vy < 0) butterfly.vy *= (1 - 0.12 * tTop * dt);
+          } else if (butterfly.y > height - padBottom) {
+            const tBottom = (butterfly.y - (height - padBottom)) / padBottom;
+            const targetUp = -Math.PI * 0.5 + (Math.random() - 0.5) * 0.4;
+            let dAngle = targetUp - butterfly.wanderAngle;
+            dAngle = ((dAngle + Math.PI) % (Math.PI * 2)) - Math.PI;
+            butterfly.wanderAngle += dAngle * (0.14 + tBottom * 0.2) * dt;
+            butterfly.vy -= tBottom * 0.35 * dt;
+            if (butterfly.vy > 0) butterfly.vy *= (1 - 0.12 * tBottom * dt);
           }
 
           // Guarantee continuous aerodynamic forward momentum (never stall into near-zero speed)
@@ -736,20 +773,40 @@ export default function ButterflyField() {
           butterfly.x += butterfly.vx * dt;
           butterfly.y += butterfly.vy * dt;
 
-          // Safe boundary clamping (never leaves visible container)
-          if (butterfly.x < 20) { butterfly.x = 20; butterfly.vx = Math.abs(butterfly.vx) * 0.8; }
-          if (butterfly.x > width - 20) { butterfly.x = width - 20; butterfly.vx = -Math.abs(butterfly.vx) * 0.8; }
-          if (butterfly.y < 20) { butterfly.y = 20; butterfly.vy = Math.abs(butterfly.vy) * 0.8; }
-          if (butterfly.y > height - 20) { butterfly.y = height - 20; butterfly.vy = -Math.abs(butterfly.vy) * 0.8; }
+          // Safe wing-cushion clamping (never slices wings or vanishes into the left line)
+          const minMarginX = Math.max(65, butterfly.size * 55);
+          const minMarginY = Math.max(50, butterfly.size * 45);
 
-          // Heading & Banking: update only when moving sufficiently to prevent angle oscillation
+          if (butterfly.x < minMarginX) {
+            butterfly.x = minMarginX;
+            if (butterfly.vx < 0) butterfly.vx = Math.abs(butterfly.vx) * 0.6 + 0.3;
+            butterfly.wanderAngle = (Math.random() - 0.5) * 0.6; // decisively face into meadow
+          } else if (butterfly.x > width - minMarginX) {
+            butterfly.x = width - minMarginX;
+            if (butterfly.vx > 0) butterfly.vx = -Math.abs(butterfly.vx) * 0.6 - 0.3;
+            butterfly.wanderAngle = Math.PI + (Math.random() - 0.5) * 0.6;
+          }
+
+          if (butterfly.y < minMarginY) {
+            butterfly.y = minMarginY;
+            if (butterfly.vy < 0) butterfly.vy = Math.abs(butterfly.vy) * 0.6 + 0.3;
+            butterfly.wanderAngle = Math.PI * 0.5 + (Math.random() - 0.5) * 0.6;
+          } else if (butterfly.y > height - minMarginY) {
+            butterfly.y = height - minMarginY;
+            if (butterfly.vy > 0) butterfly.vy = -Math.abs(butterfly.vy) * 0.6 - 0.3;
+            butterfly.wanderAngle = -Math.PI * 0.5 + (Math.random() - 0.5) * 0.6;
+          }
+
+          // Heading & Banking: natural rate-limited turning (eliminates corner spin loops)
           if (newSpeed > 0.25) {
             const targetHeading = Math.atan2(butterfly.vy, butterfly.vx) * (180 / Math.PI) + 90;
             let headingDiff = targetHeading - butterfly.rotation;
             headingDiff = ((headingDiff + 180) % 360) - 180;
-            butterfly.rotation += headingDiff * 0.1 * dt;
+            const maxTurn = 14 * dt;
+            const turnAmount = Math.max(-maxTurn, Math.min(maxTurn, headingDiff * 0.12 * dt));
+            butterfly.rotation += turnAmount;
 
-            const targetBank = Math.max(-30, Math.min(30, headingDiff * 1.15));
+            const targetBank = Math.max(-28, Math.min(28, headingDiff * 1.1));
             butterfly.bankAngle += (targetBank - butterfly.bankAngle) * 0.12 * dt;
           }
         }
@@ -934,7 +991,7 @@ export default function ButterflyField() {
               ref={(el) => {
                 unitRefs.current[index] = el;
               }}
-              className={`relative cursor-default ${
+              className={`relative pointer-events-none select-none ${
                 index === 0
                   ? "w-16 sm:w-20 md:w-24"
                   : index === 1

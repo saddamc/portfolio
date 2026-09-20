@@ -110,8 +110,8 @@ export default function TimelineSection() {
     },
     {
       id: "ecommerce-platform",
-      title: "Dashboard / SaaS App",
-      subtitle: "(Pet Adoption & SaaS Portal)",
+      title: "Petco Platform",
+      subtitle: "(Pet Adoption & Care SaaS Portal)",
       description:
         "A full-featured pet adoption and animal care platform with Firebase authentication, interactive adoption campaign dashboards, foster workflows, and secure Stripe payment integration.",
       image: "/petco.png",
@@ -149,7 +149,7 @@ export default function TimelineSection() {
           className="text-center mb-28"
         >
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
-            Latest <span className="gradient-text holographic">Works</span>
+            Latest <span className="gradient-text holographic">Projects</span>
           </h2>
         </motion.div>
 
@@ -163,20 +163,20 @@ export default function TimelineSection() {
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.05 }}
-                viewport={{ once: true }}
+                transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '-80px' }}
                 className="relative"
               >
                 {/* Center Node & Symmetrical Connector Arms (Desktop Only) */}
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 hidden lg:block w-[120px] h-[20px]">
-                  
+
                   {/* Left horizontal line segment for mockup on left */}
                   {index % 2 === 0 && (
                     <div className={`absolute right-1/2 mr-[10px] top-1/2 -translate-y-1/2 w-[48px] h-[2px] bg-gradient-to-l ${project.color} opacity-40`} />
                   )}
-                  
+
                   {/* Circle dot node */}
                   <motion.div
                     className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full border-4 bg-background z-30 cursor-pointer flex items-center justify-center shadow-md"
@@ -195,9 +195,13 @@ export default function TimelineSection() {
 
                 {/* Symmetrical Grid with inward alignment */}
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-                  
-                  {/* Mockup Column (Always first on mobile, alternating on desktop) */}
-                  <div
+
+                  {/* Mockup Column — slide from its side */}
+                  <motion.div
+                    initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: '-80px' }}
+                    transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
                     className={`order-1 flex justify-center w-full ${
                       index % 2 === 0 ? "lg:order-1 lg:justify-end" : "lg:order-2 lg:justify-start"
                     }`}
@@ -205,16 +209,20 @@ export default function TimelineSection() {
                     <div className="w-full max-w-2xl relative">
                       <FullLaptopMockup project={project} priority={index < 2} />
                     </div>
-                  </div>
+                  </motion.div>
 
-                  {/* Floating Description Details (Aligned inward towards the timeline) */}
-                  <div
+                  {/* Text Column — slide from opposite side */}
+                  <motion.div
+                    initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: '-80px' }}
+                    transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
                     className={`order-2 flex justify-center w-full ${
                       index % 2 === 0 ? "lg:order-2 lg:justify-start lg:pl-12" : "lg:order-1 lg:justify-end lg:pr-12"
                     }`}
                   >
-                    <motion.div className="space-y-6 w-full max-w-xl">
-                      
+                    <div className="space-y-6 w-full max-w-xl">
+
                       {/* Subtitled Header */}
                       <div className="space-y-2">
                         <h3 className={`text-4xl lg:text-5xl font-extrabold tracking-tight bg-gradient-to-r ${project.color} bg-clip-text text-transparent`}>
@@ -255,7 +263,7 @@ export default function TimelineSection() {
                           Live Site
                           <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-300" />
                         </a>
-                        
+
                         {project.githubUrl && (
                           <a
                             href={project.githubUrl}
@@ -270,11 +278,12 @@ export default function TimelineSection() {
                           </a>
                         )}
                       </div>
-                    </motion.div>
-                  </div>
+                    </div>
+                  </motion.div>
                 </div>
               </motion.div>
             ))}
+
           </div>
         </div>
       </div>
