@@ -28,7 +28,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://saddambhossain.dev'),
+  metadataBase: new URL('https://saddam.thenexcraft.net'),
   title: {
     default: 'Saddam Hossain | Full-Stack Web Developer & Solutions Architect',
     template: '%s | Saddam Hossain',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   description:
     'Senior Full-Stack Web Developer specializing in Next.js 15, React 19, TypeScript, Node.js, and high-performance digital platforms. Building scalable web applications, headless e-commerce, and business management systems.',
   applicationName: 'Saddam Hossain Portfolio',
-  authors: [{ name: 'Saddam Hossain', url: 'https://saddambhossain.dev' }],
+  authors: [{ name: 'Saddam Hossain', url: 'https://saddam.thenexcraft.net' }],
   generator: 'Next.js',
   keywords: [
     'Saddam Hossain',
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   alternates: {
-    canonical: 'https://saddambhossain.dev',
+    canonical: 'https://saddam.thenexcraft.net',
   },
   icons: {
     icon: [
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://saddambhossain.dev',
+    url: 'https://saddam.thenexcraft.net',
     siteName: 'Saddam Hossain Portfolio',
     title: 'Saddam Hossain | Full-Stack Web Developer & Solutions Architect',
     description:
@@ -124,13 +124,13 @@ export default function RootLayout({
     '@graph': [
       {
         '@type': 'Person',
-        '@id': 'https://saddambhossain.dev/#person',
+        '@id': 'https://saddam.thenexcraft.net/#person',
         name: 'Saddam Hossain',
         jobTitle: 'Senior Full-Stack Web Developer & Solutions Architect',
         description:
           'Passionate Full-Stack Developer specializing in Next.js, React, TypeScript, Node.js, and high-performance digital platforms.',
-        url: 'https://saddambhossain.dev',
-        image: 'https://saddambhossain.dev/shapla.png',
+        url: 'https://saddam.thenexcraft.net',
+        image: 'https://saddam.thenexcraft.net/shapla.png',
         email: 'saddam13bd@gmail.com',
         telephone: '+8801974544443',
         sameAs: [
@@ -150,13 +150,13 @@ export default function RootLayout({
       },
       {
         '@type': 'WebSite',
-        '@id': 'https://saddambhossain.dev/#website',
-        url: 'https://saddambhossain.dev',
+        '@id': 'https://saddam.thenexcraft.net/#website',
+        url: 'https://saddam.thenexcraft.net',
         name: 'Saddam Hossain Portfolio',
         description:
           'Portfolio and engineering services of Saddam Hossain, Full-Stack Web Developer.',
         publisher: {
-          '@id': 'https://saddambhossain.dev/#person',
+          '@id': 'https://saddam.thenexcraft.net/#person',
         },
         inLanguage: 'en-US',
       },
@@ -177,7 +177,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className} suppressHydrationWarning>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <CustomCursor />
           {children}
           <FloatingActions />

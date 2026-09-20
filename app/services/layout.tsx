@@ -2,11 +2,13 @@ import type { Metadata } from 'next';
 import { faqs, services } from '@/data/services';
 
 export const metadata: Metadata = {
-  title: 'Engineering Services | Saddam Hossain — Full-Stack Web Developer',
+  title: {
+    absolute: 'Engineering Services | Saddam Hossain — Full-Stack Web Developer',
+  },
   description:
     'Custom full-stack web applications, headless e-commerce storefronts, SaaS platforms, business management systems, and backend API architecture by Saddam Hossain.',
   alternates: {
-    canonical: 'https://saddambhossain.dev/services',
+    canonical: 'https://saddam.thenexcraft.net/services',
   },
   keywords: [
     'Full-Stack Web Development Services',
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
     title: 'Engineering Services | Saddam Hossain — Full-Stack Web Developer',
     description:
       'I build digital products that work. Custom web applications, headless e-commerce, SaaS systems, and bespoke business tools focused on performance, clean architecture, and conversion.',
-    url: 'https://saddambhossain.dev/services',
+    url: 'https://saddam.thenexcraft.net/services',
     type: 'website',
     images: [
       {
@@ -67,8 +69,8 @@ export default function ServicesLayout({
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
     name: 'Saddam Hossain — Full-Stack Web Development Services',
-    image: 'https://saddambhossain.dev/shapla.png',
-    url: 'https://saddambhossain.dev/services',
+    image: 'https://saddam.thenexcraft.net/shapla.png',
+    url: 'https://saddam.thenexcraft.net/services',
     telephone: '+8801974544443',
     priceRange: '$$',
     address: {

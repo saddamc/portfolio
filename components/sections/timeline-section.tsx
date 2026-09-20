@@ -245,7 +245,7 @@ export default function TimelineSection() {
                         {project.tech.map((tech: string) => (
                           <span
                             key={tech}
-                            className="bg-zinc-100/5 dark:bg-white/5 border border-zinc-200/10 dark:border-white/5 rounded-full px-3.5 py-1.5 text-xs font-semibold text-zinc-500 dark:text-zinc-400 transition-colors hover:border-zinc-200/20"
+                            className="bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/5 rounded-full px-3.5 py-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-400 transition-colors hover:border-zinc-300 dark:hover:border-white/20"
                           >
                             #{tech.toLowerCase()}
                           </span>
@@ -383,7 +383,7 @@ function FullLaptopMockup({ project, priority = false }: { project: any; priorit
 
       <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="block relative max-w-2xl mx-auto">
         {/* MacBook Display Screen Frame */}
-        <div className="relative bg-zinc-950 rounded-t-[20px] p-2.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
+        <div className="relative bg-zinc-950 rounded-t-[20px] p-2.5 shadow-[0_20px_50px_rgba(0,0,0,0.14)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-black/10 dark:border-white/5">
           {/* Inner Black Screen Bezel */}
           <div className="bg-black rounded-xl p-[5px] relative overflow-hidden">
             {/* Screen Content Bezel ratio */}

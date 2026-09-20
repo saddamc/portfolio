@@ -155,19 +155,21 @@ export default function HeroSection() {
             I&apos;M
           </motion.p>
 
-          {/* Main Name Heading with First-Time Typewriter */}
+          {/* Main Name Heading with First-Time Typewriter & Instant SEO Visibility */}
           <motion.h1
+            aria-label="Saddam Hossain — Full-Stack Web Developer & Solutions Architect"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[0.98] text-white drop-shadow-[0_4px_28px_rgba(0,0,0,0.9)] select-none mb-3 min-h-[1.98em]"
           >
-            <span>{typedFirst}</span>
+            <span className="sr-only">Saddam Hossain — Full-Stack Web Developer & Solutions Architect</span>
+            <span aria-hidden="true">{typedFirst}</span>
             {isTypingFirst && (
               <span className="text-teal-400 font-normal ml-1 animate-pulse" aria-hidden="true">|</span>
             )}
-            <br />
-            <span className="bg-gradient-to-r from-teal-300 via-cyan-300 to-sky-400 bg-clip-text text-transparent drop-shadow-[0_4px_24px_rgba(6,182,212,0.6)]">
+            <br aria-hidden="true" />
+            <span aria-hidden="true" className="bg-gradient-to-r from-teal-300 via-cyan-300 to-sky-400 bg-clip-text text-transparent drop-shadow-[0_4px_24px_rgba(6,182,212,0.6)]">
               {typedLast}
             </span>
             {isTypingLast && (
@@ -175,13 +177,15 @@ export default function HeroSection() {
             )}
           </motion.h1>
 
-          {/* Subtitle with Continuous Loop Typewriter */}
+          {/* Subtitle with Continuous Loop Typewriter & Instant SEO Visibility */}
           <motion.h2
+            aria-label="Full-Stack Web Developer, Next.js & React Architect, MERN Stack Expert"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-base sm:text-xl lg:text-2xl font-extrabold tracking-[0.12em] uppercase text-emerald-300 drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] mb-8 min-h-[1.6em] flex items-center"
           >
+            <span className="sr-only">Full-Stack Web Developer, Next.js & React Architect, MERN Stack Expert</span>
             <TypewriterText
               texts={[
                 "FULL-STACK WEB DEVELOPER",

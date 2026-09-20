@@ -1,7 +1,7 @@
-
+import type { Metadata } from 'next';
 
 interface PageParams {
-  id: string; // your dynamic param
+  id: string;
 }
 
 interface PageProps {
@@ -9,9 +9,14 @@ interface PageProps {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 export default async function Page({ params, searchParams }: PageProps) {
   const resolvedParams = await params;
-  const resolvedSearchParams = await searchParams;
-
   return <div>Page ID: {resolvedParams.id}</div>;
 }

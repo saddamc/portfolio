@@ -90,7 +90,7 @@ export default function Navbar() {
 
   const isServicesPage = pathname === '/services';
   const isHomeHero = (pathname === '/' || pathname === '') && !scrolled;
-  const isDarkCanvas = isServicesPage || isHomeHero || (mounted ? (resolvedTheme === 'dark' || theme === 'dark') : true);
+  const isDarkCanvas = isServicesPage || isHomeHero || (mounted ? (resolvedTheme === 'dark' || theme === 'dark') : false);
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-3' : 'py-5'}`}>
@@ -170,6 +170,28 @@ export default function Navbar() {
 
         {/* Right CTA Button Container */}
         <div className="flex items-center gap-3">
+          {/* Desktop Theme Toggle Pill */}
+          <button
+            onClick={() => setTheme((resolvedTheme || theme) === 'dark' ? 'light' : 'dark')}
+            className={`hidden md:flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 cursor-pointer ${
+              isDarkCanvas
+                ? 'border border-white/15 bg-white/10 text-white hover:bg-white/20 hover:border-white/30'
+                : 'border border-slate-900/15 bg-slate-900/5 text-slate-800 hover:bg-slate-900/10 hover:border-slate-900/25'
+            }`}
+            aria-label="Toggle theme"
+            title={mounted && (resolvedTheme || theme) === 'dark' ? 'Switch to Light theme' : 'Switch to Dark theme'}
+          >
+            {mounted ? (
+              (resolvedTheme || theme) === 'dark' ? (
+                <Sun className="h-4 w-4 text-amber-400 hover:rotate-45 transition-transform duration-300" />
+              ) : (
+                <Moon className="h-4 w-4 text-cyan-600 hover:-rotate-12 transition-transform duration-300" />
+              )
+            ) : (
+              <Sun className="h-4 w-4 text-amber-500 opacity-60" />
+            )}
+          </button>
+
           {/* Let's Talk CTA button — Apple Translucent "Water Droplet" Glass + Magnetic Physics */}
           <Magnetic range={45} strength={0.25} className="hidden md:inline-block">
             <Link
@@ -271,16 +293,18 @@ export default function Navbar() {
               
               {/* Mobile Theme Toggle */}
               <button
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="flex items-center justify-between px-4 py-2.5 rounded-2xl text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-foreground/5 dark:hover:bg-white/5 transition-all duration-300"
+                onClick={() => setTheme((resolvedTheme || theme) === 'dark' ? 'light' : 'dark')}
+                className="flex items-center justify-between px-4 py-2.5 rounded-2xl text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-foreground/5 dark:hover:bg-white/5 transition-all duration-300 cursor-pointer"
               >
                 <span>Theme</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs capitalize text-muted-foreground">{theme === 'dark' ? 'Dark' : 'Light'}</span>
-                  {theme === 'dark' ? (
+                  <span className="text-xs capitalize text-muted-foreground">
+                    {mounted ? ((resolvedTheme || theme) === 'dark' ? 'Dark' : 'Light') : 'Light'}
+                  </span>
+                  {mounted && (resolvedTheme || theme) === 'dark' ? (
                     <Sun className="h-4 w-4 text-amber-400" />
                   ) : (
-                    <Moon className="h-4 w-4 text-cyan-400" />
+                    <Moon className="h-4 w-4 text-cyan-500" />
                   )}
                 </div>
               </button>
