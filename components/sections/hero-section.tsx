@@ -157,13 +157,13 @@ export default function HeroSection() {
 
           {/* Main Name Heading with First-Time Typewriter & Instant SEO Visibility */}
           <motion.h1
-            aria-label="Saddam Hossain — Full-Stack Web Developer & Solutions Architect"
+            aria-label="Saddam Hossain"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[0.98] text-white drop-shadow-[0_4px_28px_rgba(0,0,0,0.9)] select-none mb-3 min-h-[1.98em]"
           >
-            <span className="sr-only">Saddam Hossain — Full-Stack Web Developer & Solutions Architect</span>
+            <span className="sr-only">Saddam Hossain</span>
             <span aria-hidden="true">{typedFirst}</span>
             {isTypingFirst && (
               <span className="text-teal-400 font-normal ml-1 animate-pulse" aria-hidden="true">|</span>
@@ -179,19 +179,19 @@ export default function HeroSection() {
 
           {/* Subtitle with Continuous Loop Typewriter & Instant SEO Visibility */}
           <motion.h2
-            aria-label="Full-Stack Web Developer, Next.js & React Architect, MERN Stack Expert"
+            aria-label="Full-Stack Web Developer, React, Next.js, Node.js and TypeScript"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-base sm:text-xl lg:text-2xl font-extrabold tracking-[0.12em] uppercase text-emerald-300 drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] mb-8 min-h-[1.6em] flex items-center"
           >
-            <span className="sr-only">Full-Stack Web Developer, Next.js & React Architect, MERN Stack Expert</span>
+            <span className="sr-only">Full-Stack Web Developer, React, Next.js, Node.js and TypeScript</span>
             <TypewriterText
               texts={[
                 "FULL-STACK WEB DEVELOPER",
-                "NEXT.JS & REACT ARCHITECT",
-                "MERN STACK EXPERT",
-                "AI SOLUTIONS ENGINEER",
+                "REACT & NEXT.JS EXPERT",
+                "NODE.JS & TYPESCRIPT",
+                "BUSINESS SYSTEM ARCHITECT",
               ]}
               speed={70}
               deleteSpeed={35}

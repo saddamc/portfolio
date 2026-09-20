@@ -243,7 +243,7 @@ export default function ContactSection() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Connect
+              Work Together
             </span>
           </h2>
           <p className="text-lg max-w-2xl mx-auto text-gray-900 dark:text-gray-100">

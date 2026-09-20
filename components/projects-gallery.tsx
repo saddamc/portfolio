@@ -199,7 +199,8 @@ export default function ProjectsGallery() {
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100"
           >
-            My Created <span className="gradient-text">Works</span>
+            <span className="sr-only">Projects</span>
+            <span aria-hidden="true">My Created <span className="gradient-text">Works</span></span>
           </motion.h1>
 
           <motion.p

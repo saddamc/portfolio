@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
 import { faqs, services } from '@/data/services';
-
 export const metadata: Metadata = {
   title: {
-    absolute: 'Engineering Services | Saddam Hossain — Full-Stack Web Developer',
+    absolute: 'Services | Saddam Hossain — Full-Stack Web Developer',
   },
   description:
-    'Custom full-stack web applications, headless e-commerce storefronts, SaaS platforms, business management systems, and backend API architecture by Saddam Hossain.',
+    'Explore web development, e-commerce, SaaS, business application and API development services by Saddam Hossain.',
   alternates: {
     canonical: 'https://saddam.thenexcraft.net/services',
   },
@@ -21,9 +20,9 @@ export const metadata: Metadata = {
     'Hire Full-Stack Engineer',
   ],
   openGraph: {
-    title: 'Engineering Services | Saddam Hossain — Full-Stack Web Developer',
+    title: 'Services | Saddam Hossain — Full-Stack Web Developer',
     description:
-      'I build digital products that work. Custom web applications, headless e-commerce, SaaS systems, and bespoke business tools focused on performance, clean architecture, and conversion.',
+      'Explore web development, e-commerce, SaaS, business application and API development services by Saddam Hossain.',
     url: 'https://saddam.thenexcraft.net/services',
     type: 'website',
     images: [
@@ -37,9 +36,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Engineering Services | Saddam Hossain — Full-Stack Web Developer',
+    title: 'Services | Saddam Hossain — Full-Stack Web Developer',
     description:
-      'Custom full-stack web applications, headless e-commerce, SaaS systems, and business workflows engineered for speed and scalability.',
+      'Explore web development, e-commerce, SaaS, business application and API development services by Saddam Hossain.',
     images: ['/shapla.png'],
     creator: '@saddamc',
   },

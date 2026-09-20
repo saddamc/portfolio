@@ -30,11 +30,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://saddam.thenexcraft.net'),
   title: {
-    default: 'Saddam Hossain | Full-Stack Web Developer & Solutions Architect',
+    default: 'Saddam Hossain | Full-Stack Web Developer',
     template: '%s | Saddam Hossain',
   },
   description:
-    'Senior Full-Stack Web Developer specializing in Next.js 15, React 19, TypeScript, Node.js, and high-performance digital platforms. Building scalable web applications, headless e-commerce, and business management systems.',
+    'Full-Stack Web Developer building modern web applications, e-commerce platforms, SaaS products and business systems with React, Next.js, Node.js and TypeScript.',
   applicationName: 'Saddam Hossain Portfolio',
   authors: [{ name: 'Saddam Hossain', url: 'https://saddam.thenexcraft.net' }],
   generator: 'Next.js',
@@ -76,9 +76,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://saddam.thenexcraft.net',
     siteName: 'Saddam Hossain Portfolio',
-    title: 'Saddam Hossain | Full-Stack Web Developer & Solutions Architect',
+    title: 'Saddam Hossain | Full-Stack Web Developer',
     description:
-      'Senior Full-Stack Web Developer specializing in Next.js, React, TypeScript, and modern scalable architectures. Discover real production systems and engineering services.',
+      'Full-Stack Web Developer building modern web applications, e-commerce platforms, SaaS products and business systems with React, Next.js, Node.js and TypeScript.',
     images: [
       {
         url: '/shapla.png',
@@ -90,9 +90,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Saddam Hossain | Full-Stack Web Developer & Solutions Architect',
+    title: 'Saddam Hossain | Full-Stack Web Developer',
     description:
-      'Senior Full-Stack Web Developer crafting sub-second web applications, headless e-commerce, and bespoke business systems.',
+      'Full-Stack Web Developer building modern web applications, e-commerce platforms, SaaS products and business systems with React, Next.js, Node.js and TypeScript.',
     images: ['/shapla.png'],
     creator: '@saddamc',
   },
@@ -109,7 +109,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'google65b891fb2321ea24.html',
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
   category: 'technology',
 };
@@ -126,9 +126,9 @@ export default function RootLayout({
         '@type': 'Person',
         '@id': 'https://saddam.thenexcraft.net/#person',
         name: 'Saddam Hossain',
-        jobTitle: 'Senior Full-Stack Web Developer & Solutions Architect',
+        jobTitle: 'Full-Stack Web Developer',
         description:
-          'Passionate Full-Stack Developer specializing in Next.js, React, TypeScript, Node.js, and high-performance digital platforms.',
+          'Full-Stack Web Developer building modern web applications, e-commerce platforms, SaaS products and business systems with React, Next.js, Node.js and TypeScript.',
         url: 'https://saddam.thenexcraft.net',
         image: 'https://saddam.thenexcraft.net/shapla.png',
         email: 'saddam13bd@gmail.com',
@@ -138,14 +138,11 @@ export default function RootLayout({
           'https://www.linkedin.com/in/saddam-hossain-09299535/',
         ],
         knowsAbout: [
-          'Full-Stack Web Development',
-          'Next.js 15 App Router',
-          'React 19',
-          'TypeScript',
-          'Node.js & Express',
-          'MongoDB & PostgreSQL',
-          'Tailwind CSS & Modern UI',
-          'REST APIs & System Architecture',
+          'Web Development',
+          'E-Commerce Development',
+          'SaaS Development',
+          'Business Applications',
+          'API & Backend Development',
         ],
       },
       {

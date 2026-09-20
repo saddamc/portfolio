@@ -11,25 +11,32 @@ export const contentType = 'image/png'
 export default function Icon() {
   return new ImageResponse(
     (
-      // ImageResponse JSX element - modern gradient circular badge
       <div
         style={{
-          fontSize: 20,
-          background: 'linear-gradient(to bottom right, #a855f7, #06b6d4)',
           width: '100%',
           height: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'white',
+          backgroundColor: '#020617', // slate-950
           borderRadius: '50%',
-          fontWeight: 'bold',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
         }}
       >
-        S
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#22d3ee" // cyan-400
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M8.5 4h7a4 4 0 0 1 0 8h-7a4 4 0 0 0 0 8h7" />
+        </svg>
       </div>
     ),
-    // ImageResponse options
     {
       ...size,
     }

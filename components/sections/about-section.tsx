@@ -83,10 +83,10 @@ export default function AboutSection() {
           </div>
 
           <h2 className="text-4xl md:text-5xl font-bold mb-5 tracking-tight text-foreground">
-            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">Me</span>
+            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">Saddam Hossain</span>
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed text-muted-foreground">
-            I'm a passionate full-stack developer dedicated to crafting modern, high-performance web applications.
+            I’m Saddam Hossain, a Full-Stack Web Developer focused on building modern web applications, business systems and digital products.
             I love turning complex engineering challenges into simple, elegant, and intuitive digital solutions.
           </p>
         </motion.div>
