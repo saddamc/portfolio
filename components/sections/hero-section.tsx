@@ -7,12 +7,21 @@ import { useEffect, useState, useRef } from "react";
 import ViewDetailsModal from "../view-details-modal";
 import ButterflyField from "../butterfly-field";
 import TypewriterText from "../typewriter-text";
+import { useTheme } from "next-themes";
 
 export default function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, resolvedTheme } = useTheme();
   const heroRef = useRef<HTMLElement>(null);
   const bgParallaxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isNightMode = mounted ? (resolvedTheme === "dark" || theme === "dark") : false;
 
   // First-load typewriter effect for "SADDAM" and "HOSSAIN"
   const [typedFirst, setTypedFirst] = useState("");
@@ -99,7 +108,7 @@ export default function HeroSection() {
       ref={heroRef}
       className="relative min-h-screen flex items-center overflow-hidden py-20 lg:py-0 select-none"
     >
-      {/* CLEAN MEADOW BACKGROUND WITH SUBTLE PARALLAX */}
+      {/* CLEAN MEADOW BACKGROUND (DAY & NIGHT) WITH SUBTLE PARALLAX */}
       <div
         ref={bgParallaxRef}
         className="absolute inset-0 z-0 pointer-events-none transition-transform duration-500 ease-out will-change-transform scale-105"
@@ -107,27 +116,64 @@ export default function HeroSection() {
           transform: "translate3d(0px, 0px, 0) scale(1.04)",
         }}
       >
-        <Image
-          src="/images/hero-spring-garden-v2.webp"
-          alt="Sunlit spring garden with cherry blossoms, mountain lake, and wildflowers"
-          fill
-          priority
-          quality={95}
-          draggable={false}
-          className="object-cover object-center select-none pointer-events-none"
-          sizes="100vw"
-        />
+        {/* Daytime Sunlit Spring Garden */}
+        <div
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+            isNightMode ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <Image
+            src="/images/hero-spring-garden-v2.webp"
+            alt="Sunlit spring garden with cherry blossoms, mountain lake, and wildflowers"
+            fill
+            priority
+            quality={95}
+            draggable={false}
+            className="object-cover object-center select-none pointer-events-none"
+            sizes="100vw"
+          />
+        </div>
+
+        {/* Nighttime Enchanted Moonlit Garden */}
+        <div
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+            isNightMode ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <Image
+            src="/images/hero-spring-garden-night-v2.webp"
+            alt="Enchanted moonlit spring garden with starry sky, full moon, and cherry blossoms"
+            fill
+            priority
+            quality={95}
+            draggable={false}
+            className="object-cover object-center select-none pointer-events-none"
+            sizes="100vw"
+          />
+        </div>
       </div>
 
       {/* NATURAL ATMOSPHERIC LIGHTING & READABILITY OVERLAYS */}
-      {/* 1. Subtle top fade for crisp navbar readability without darkening canopy */}
-      <div className="absolute inset-x-0 top-0 h-28 z-[1] pointer-events-none bg-gradient-to-b from-slate-950/50 via-slate-950/20 to-transparent" />
+      {/* 1. Top fade for crisp navbar readability without darkening canopy */}
+      <div
+        className={`absolute inset-x-0 top-0 h-28 z-[1] pointer-events-none transition-colors duration-700 ${
+          isNightMode
+            ? "bg-gradient-to-b from-slate-950/75 via-slate-950/35 to-transparent"
+            : "bg-gradient-to-b from-slate-950/50 via-slate-950/20 to-transparent"
+        }`}
+      />
 
-      {/* 2. Balanced left readability vignette — keeps text ultra-crisp while letting the meadow shine */}
-      <div className="absolute inset-0 z-[2] pointer-events-none bg-gradient-to-r from-slate-950/70 via-slate-950/35 to-transparent sm:w-[60%] lg:w-[50%]" />
+      {/* 2. Balanced left readability vignette — keeps text ultra-crisp while letting the scenery shine */}
+      <div
+        className={`absolute inset-0 z-[2] pointer-events-none transition-all duration-700 ${
+          isNightMode
+            ? "bg-gradient-to-r from-slate-950/85 via-slate-950/50 to-transparent sm:w-[65%] lg:w-[55%]"
+            : "bg-gradient-to-r from-slate-950/70 via-slate-950/35 to-transparent sm:w-[60%] lg:w-[50%]"
+        }`}
+      />
 
       {/* INTERACTIVE PHYSICS BUTTERFLY SIMULATION */}
-      <ButterflyField />
+      <ButterflyField isNightMode={isNightMode} />
 
       {/* HERO MAIN CONTENT CONTAINER */}
       <div className="relative z-30 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 flex items-center min-h-[88vh] pt-24 pb-14 sm:py-0">

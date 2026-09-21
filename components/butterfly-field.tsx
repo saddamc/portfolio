@@ -39,6 +39,8 @@ type ButterflyState = {
   baskTimer: number;
   takeoffTimer: number;
   canPerch: boolean;
+  cruiseDirX: 1 | -1;
+  turnCooldown: number;
 };
 
 type BlossomPetal = {
@@ -57,6 +59,19 @@ type BlossomPetal = {
   hueColor: string;
 };
 
+type Firefly = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  pulsePhase: number;
+  pulseSpeed: number;
+  wanderAngle: number;
+  color: string;
+  glowColor: string;
+};
+
 // Prominent flower perch coordinates in the sunlit spring garden scenery
 const FLOWER_PERCHES = [
   { x: 62.6, y: 79.3, angle: 32, name: "White Chamomile Daisy" },  // Prominent white daisy floret in lower foreground
@@ -73,13 +88,13 @@ const INITIAL_BUTTERFLIES: ButterflyState[] = [
     species: "monarch",
     x: 48,
     y: 28,
-    vx: 0.75,
-    vy: 0.12,
-    rotation: 68,
+    vx: 0.85,
+    vy: -0.1,
+    rotation: 72,
     bankAngle: 0,
     pitchAngle: 0,
     bobY: 0,
-    size: 0.95,
+    size: 1.05,
     maxSpeed: 2.2,
     fearRadius: 240,
     curve: 1,
@@ -91,7 +106,7 @@ const INITIAL_BUTTERFLIES: ButterflyState[] = [
     flutterTimer: 1.5,
     flapPhase: 0,
     flapSpeed: 0.17,
-    wanderAngle: 0.15,
+    wanderAngle: -0.12,
     fleeTimer: 0,
     fleeAngle: 0,
     perchTimer: 0,
@@ -100,6 +115,8 @@ const INITIAL_BUTTERFLIES: ButterflyState[] = [
     baskTimer: 0,
     takeoffTimer: 0,
     canPerch: false,
+    cruiseDirX: 1,
+    turnCooldown: 16,
   },
   {
     // Butterfly 1: Electric Blue Morpho — dedicated flyer, iridescent cyan/sapphire wings in mid-right
@@ -107,13 +124,13 @@ const INITIAL_BUTTERFLIES: ButterflyState[] = [
     species: "blue_morpho",
     x: 68,
     y: 44,
-    vx: -0.65,
-    vy: 0.15,
-    rotation: -70,
+    vx: -0.75,
+    vy: -0.12,
+    rotation: -75,
     bankAngle: 0,
     pitchAngle: 0,
     bobY: 0,
-    size: 0.82,
+    size: 0.98,
     maxSpeed: 2.0,
     fearRadius: 220,
     curve: -1,
@@ -125,7 +142,7 @@ const INITIAL_BUTTERFLIES: ButterflyState[] = [
     flutterTimer: 1.7,
     flapPhase: 1.4,
     flapSpeed: 0.18,
-    wanderAngle: 2.9,
+    wanderAngle: Math.PI - 0.15,
     fleeTimer: 0,
     fleeAngle: 0,
     perchTimer: 0,
@@ -134,6 +151,8 @@ const INITIAL_BUTTERFLIES: ButterflyState[] = [
     baskTimer: 0,
     takeoffTimer: 0,
     canPerch: false,
+    cruiseDirX: -1,
+    turnCooldown: 18,
   },
   {
     // Butterfly 2: Garden Daisy Percher — STARTS DIRECTLY PERCHED on top of the prominent White Chamomile Daisy!
@@ -147,9 +166,9 @@ const INITIAL_BUTTERFLIES: ButterflyState[] = [
     bankAngle: 0,
     pitchAngle: 0,
     bobY: 0,
-    size: 0.66,
-    maxSpeed: 1.6,
-    fearRadius: 165,
+    size: 0.94,
+    maxSpeed: 1.8,
+    fearRadius: 180,
     curve: 1,
     phase: 2.6,
     state: "perched", // Sitting on top of the daisy floret on page load!
@@ -168,32 +187,34 @@ const INITIAL_BUTTERFLIES: ButterflyState[] = [
     baskTimer: 0,
     takeoffTimer: 0,
     canPerch: true,
+    cruiseDirX: -1,
+    turnCooldown: 15,
   },
   {
-    // Butterfly 3: Full-Field Wildflower Flitter — Azure Blue Morpho hovering across left & right
+    // Butterfly 3: Full-Field Wildflower Flitter — Azure Blue Morpho hovering across left & right (prominently sized)
     id: 3,
     species: "blue_morpho",
     x: 22,
     y: 56,
-    vx: 0.5,
-    vy: -0.15,
-    rotation: 55,
+    vx: 0.65,
+    vy: -0.18,
+    rotation: 58,
     bankAngle: 0,
     pitchAngle: 0,
     bobY: 0,
-    size: 0.42,
-    maxSpeed: 1.4,
-    fearRadius: 130,
+    size: 0.90, // Increased size to be prominent & perfect
+    maxSpeed: 1.8,
+    fearRadius: 160,
     curve: -1,
     phase: 3.8,
     state: "wander",
-    blur: 0.4,
+    blur: 0, // Razor sharp, no blur
     isGliding: false,
     glideTimer: 0,
     flutterTimer: 1.4,
     flapPhase: 3.8,
     flapSpeed: 0.19,
-    wanderAngle: 0.3,
+    wanderAngle: -0.2,
     fleeTimer: 0,
     fleeAngle: 0,
     perchTimer: 0,
@@ -202,32 +223,34 @@ const INITIAL_BUTTERFLIES: ButterflyState[] = [
     baskTimer: 0,
     takeoffTimer: 0,
     canPerch: true,
+    cruiseDirX: 1,
+    turnCooldown: 14,
   },
   {
-    // Butterfly 4: High Canopy Monarch (Tiny / "lot of small") — delicate flutter high near cherry blossoms
+    // Butterfly 4: High Canopy Monarch — delicate flutter near cherry blossoms & open sky (prominently sized)
     id: 4,
     species: "monarch",
     x: 82,
-    y: 18,
-    vx: 0.3,
-    vy: -0.1,
-    rotation: 65,
+    y: 20,
+    vx: -0.55,
+    vy: -0.12,
+    rotation: -68,
     bankAngle: 0,
     pitchAngle: 0,
     bobY: 0,
-    size: 0.24,
-    maxSpeed: 1.1,
-    fearRadius: 100,
+    size: 0.86, // Increased size matching 3rd image reference!
+    maxSpeed: 1.7,
+    fearRadius: 150,
     curve: 1,
     phase: 5.1,
     state: "wander",
-    blur: 0.8,
+    blur: 0, // Razor sharp, no blur
     isGliding: false,
     glideTimer: 0,
     flutterTimer: 1.2,
     flapPhase: 5.1,
     flapSpeed: 0.2,
-    wanderAngle: -0.5,
+    wanderAngle: Math.PI - 0.18,
     fleeTimer: 0,
     fleeAngle: 0,
     perchTimer: 0,
@@ -236,11 +259,19 @@ const INITIAL_BUTTERFLIES: ButterflyState[] = [
     baskTimer: 0,
     takeoffTimer: 0,
     canPerch: true,
+    cruiseDirX: -1,
+    turnCooldown: 17,
   },
 ];
 
-export default function ButterflyField() {
+export default function ButterflyField({ isNightMode = false }: { isNightMode?: boolean }) {
   const [isMounted, setIsMounted] = useState(false);
+  const isNightRef = useRef(isNightMode);
+
+  useEffect(() => {
+    isNightRef.current = isNightMode;
+  }, [isNightMode]);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRefs = useRef<(HTMLDivElement | null)[]>([]);
   const unitRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -253,6 +284,8 @@ export default function ButterflyField() {
     { x: number; y: number; alpha: number; size: number; color: string }[]
   >([]);
   const petalsRef = useRef<BlossomPetal[]>([]);
+  const firefliesRef = useRef<Firefly[]>([]);
+  const fireflyAlphaRef = useRef(isNightMode ? 1 : 0);
 
   const mouseRef = useRef({
     x: -2000,
@@ -277,7 +310,8 @@ export default function ButterflyField() {
       !butterfliesRef.current ||
       butterfliesRef.current.length !== INITIAL_BUTTERFLIES.length ||
       butterfliesRef.current[0]?.id === undefined ||
-      butterfliesRef.current[0]?.fleeTimer === undefined
+      butterfliesRef.current[0]?.fleeTimer === undefined ||
+      butterfliesRef.current[0]?.cruiseDirX === undefined
     ) {
       butterfliesRef.current = structuredClone(INITIAL_BUTTERFLIES);
     }
@@ -353,6 +387,20 @@ export default function ButterflyField() {
       vSway: Math.random() * 0.02 + 0.01,
       opacity: Math.random() * 0.35 + 0.5,
       hueColor: petalColors[Math.floor(Math.random() * petalColors.length)],
+    }));
+
+    // Initialize 24 living nocturnal fireflies scattered naturally over flowers & mid-air
+    firefliesRef.current = Array.from({ length: 24 }, () => ({
+      x: Math.random() * (width || 1200),
+      y: (Math.random() * 0.6 + 0.35) * (height || 800),
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.2 - 0.05,
+      size: Math.random() * 1.2 + 1.8,
+      pulsePhase: Math.random() * Math.PI * 2,
+      pulseSpeed: Math.random() * 0.03 + 0.02,
+      wanderAngle: Math.random() * Math.PI * 2,
+      color: Math.random() < 0.85 ? "rgba(235, 255, 130," : "rgba(120, 245, 210,",
+      glowColor: Math.random() < 0.85 ? "#bef264" : "#5eead4",
     }));
 
     const handlePointerMove = (event: PointerEvent) => {
@@ -505,6 +553,8 @@ export default function ButterflyField() {
           if (butterfly.takeoffTimer <= 0) {
             butterfly.state = "wander";
             butterfly.wanderAngle = Math.atan2(butterfly.vy, butterfly.vx);
+            butterfly.cruiseDirX = butterfly.vx >= 0 ? 1 : -1;
+            butterfly.turnCooldown = Math.random() * 8 + 14;
           }
         }
 
@@ -654,6 +704,11 @@ export default function ButterflyField() {
 
             butterfly.vx += (targetVx - butterfly.vx) * 0.12 * dt;
             butterfly.vy += (targetVy - butterfly.vy) * 0.12 * dt;
+            if (butterfly.fleeTimer <= 0) {
+              butterfly.cruiseDirX = butterfly.vx >= 0 ? 1 : -1;
+              butterfly.wanderAngle = Math.atan2(butterfly.vy, butterfly.vx);
+              butterfly.turnCooldown = Math.random() * 8 + 14;
+            }
           } else if (isCursorThreat) {
             // Smooth steering away from cursor
             const safeDist = Math.max(distance, 0.001);
@@ -669,14 +724,41 @@ export default function ButterflyField() {
             butterfly.vx += (targetVx - butterfly.vx) * 0.08 * dt;
             butterfly.vy += (targetVy - butterfly.vy) * 0.08 * dt;
           } else {
-            // Natural wandering cruise across the full landscape
-            butterfly.wanderAngle += (Math.random() - 0.5) * 0.1 * dt;
-            const cruiseSpeed = butterfly.isGliding ? butterfly.maxSpeed * 0.82 : butterfly.maxSpeed;
-            const targetVx = Math.cos(butterfly.wanderAngle) * cruiseSpeed;
-            const targetVy = Math.sin(butterfly.wanderAngle) * cruiseSpeed + (butterfly.isGliding ? 0.2 : -0.04);
+            // Natural mixed flight: Dominant Horizontal Left/Right traverse with authentic Bottom-to-Top ascending flutter lift
+            butterfly.turnCooldown = (butterfly.turnCooldown ?? 15) - dtSec;
+            if (butterfly.turnCooldown <= 0) {
+              butterfly.cruiseDirX = butterfly.cruiseDirX === 1 ? -1 : 1;
+              butterfly.turnCooldown = Math.random() * 8 + 14;
+            }
 
-            butterfly.vx += (targetVx - butterfly.vx) * 0.05 * dt;
-            butterfly.vy += (targetVy - butterfly.vy) * 0.05 * dt;
+            const dirX = butterfly.cruiseDirX ?? (butterfly.vx >= 0 ? 1 : -1);
+
+            // Upward lift bias: butterflies naturally rise from bottom flowers (y > 55%) towards mid/top canopy
+            const heightRatio = butterfly.y / Math.max(height, 1);
+            const upwardBias = heightRatio > 0.55 ? -0.36 * Math.min(1, (heightRatio - 0.55) / 0.35) : -0.08;
+
+            // Wing flutter lift: active downstrokes produce upward lift impulses (-vy)
+            const flapLift = !butterfly.isGliding ? -0.22 * Math.max(0, Math.sin(butterfly.flapPhase)) : 0.14;
+
+            // Gentle altitude undulating wave (natural graceful flight path)
+            const altitudeWave = Math.sin(time * 0.0015 + butterfly.phase) * 0.22;
+
+            // Target pitch angle combining horizontal traverse with bottom-to-top ascent
+            const targetPitch = upwardBias + altitudeWave;
+            const targetAngle = dirX === 1 ? targetPitch : Math.PI - targetPitch;
+
+            // Rate-limited heading adjustment towards horizontal/ascent cruise
+            let dAngle = targetAngle - butterfly.wanderAngle;
+            dAngle = ((dAngle + Math.PI) % (Math.PI * 2)) - Math.PI;
+            butterfly.wanderAngle += dAngle * 0.065 * dt;
+
+            // Cruising velocities: horizontal traversal is primary & majestic
+            const cruiseSpeed = butterfly.isGliding ? butterfly.maxSpeed * 0.88 : butterfly.maxSpeed;
+            const targetVx = Math.cos(butterfly.wanderAngle) * cruiseSpeed;
+            const targetVy = Math.sin(butterfly.wanderAngle) * cruiseSpeed + flapLift;
+
+            butterfly.vx += (targetVx - butterfly.vx) * 0.06 * dt;
+            butterfly.vy += (targetVy - butterfly.vy) * 0.06 * dt;
           }
 
           /*
@@ -723,6 +805,8 @@ export default function ButterflyField() {
             if (butterfly.vx < 0) {
               butterfly.vx *= (1 - 0.15 * tLeft * dt);
             }
+            butterfly.cruiseDirX = 1;
+            butterfly.turnCooldown = Math.random() * 8 + 14;
           } else if (butterfly.x > width - padRight) {
             const tRight = (butterfly.x - (width - padRight)) / padRight;
             const targetLeft = Math.PI + (Math.sin(butterfly.phase + butterfly.x * 0.05) * 0.35);
@@ -733,12 +817,14 @@ export default function ButterflyField() {
             if (butterfly.vx > 0) {
               butterfly.vx *= (1 - 0.15 * tRight * dt);
             }
+            butterfly.cruiseDirX = -1;
+            butterfly.turnCooldown = Math.random() * 8 + 14;
           }
 
-          // Vertical boundary curves
+          // Vertical boundary curves: bottom meadow gently lifts upward (bottom-to-top)
           if (butterfly.y < padTop) {
             const tTop = (padTop - butterfly.y) / padTop;
-            const targetDown = Math.PI * 0.5 + (Math.random() - 0.5) * 0.4;
+            const targetDown = Math.PI * 0.5 + (Math.random() - 0.5) * 0.3;
             let dAngle = targetDown - butterfly.wanderAngle;
             dAngle = ((dAngle + Math.PI) % (Math.PI * 2)) - Math.PI;
             butterfly.wanderAngle += dAngle * (0.14 + tTop * 0.2) * dt;
@@ -746,12 +832,12 @@ export default function ButterflyField() {
             if (butterfly.vy < 0) butterfly.vy *= (1 - 0.12 * tTop * dt);
           } else if (butterfly.y > height - padBottom) {
             const tBottom = (butterfly.y - (height - padBottom)) / padBottom;
-            const targetUp = -Math.PI * 0.5 + (Math.random() - 0.5) * 0.4;
+            const targetUp = -Math.PI * 0.5 + (Math.random() - 0.5) * 0.3;
             let dAngle = targetUp - butterfly.wanderAngle;
             dAngle = ((dAngle + Math.PI) % (Math.PI * 2)) - Math.PI;
-            butterfly.wanderAngle += dAngle * (0.14 + tBottom * 0.2) * dt;
-            butterfly.vy -= tBottom * 0.35 * dt;
-            if (butterfly.vy > 0) butterfly.vy *= (1 - 0.12 * tBottom * dt);
+            butterfly.wanderAngle += dAngle * (0.16 + tBottom * 0.25) * dt;
+            butterfly.vy -= tBottom * 0.45 * dt; // Strong bottom-to-top lift from ground flowers!
+            if (butterfly.vy > 0) butterfly.vy *= (1 - 0.15 * tBottom * dt);
           }
 
           // Guarantee continuous aerodynamic forward momentum (never stall into near-zero speed)
@@ -774,8 +860,8 @@ export default function ButterflyField() {
           butterfly.y += butterfly.vy * dt;
 
           // Safe wing-cushion clamping (never slices wings or vanishes into the left line)
-          const minMarginX = Math.max(65, butterfly.size * 55);
-          const minMarginY = Math.max(50, butterfly.size * 45);
+          const minMarginX = Math.max(75, butterfly.size * 65);
+          const minMarginY = Math.max(55, butterfly.size * 55);
 
           if (butterfly.x < minMarginX) {
             butterfly.x = minMarginX;
@@ -811,14 +897,25 @@ export default function ButterflyField() {
           }
         }
 
-        // Apply 3D wing transform & sunlight illumination
+        // Apply 3D wing transform & sunlight/moonlight illumination
         const foldNormalized = Math.max(0, Math.min(1, (wingAngle + 8) / 74));
         const lighting = 1 - foldNormalized * 0.18;
-
+        const isNight = isNightRef.current;
         const isPerched = butterfly.state === "perched";
-        const shadowFilter = isPerched
-          ? `drop-shadow(0 3px 6px rgba(35, 18, 8, 0.45)) brightness(${lighting})`
-          : `drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32)) brightness(${lighting})`;
+        const isBlue = butterfly.species === "blue_morpho";
+
+        // Day vs Night Mode Bioluminescent Moonlight Aura & Shadows
+        let shadowFilter: string;
+        if (isNight) {
+          const glowColor = isBlue ? "rgba(56, 189, 248, 0.75)" : "rgba(251, 191, 36, 0.75)";
+          shadowFilter = isPerched
+            ? `drop-shadow(0 0 10px ${glowColor}) drop-shadow(0 2px 4px rgba(0,0,0,0.85)) brightness(1.15)`
+            : `drop-shadow(0 0 16px ${glowColor}) drop-shadow(0 4px 12px rgba(0,0,0,0.75)) brightness(1.2)`;
+        } else {
+          shadowFilter = isPerched
+            ? `drop-shadow(0 3px 6px rgba(35, 18, 8, 0.45)) brightness(${lighting})`
+            : `drop-shadow(0 8px 18px rgba(0, 0, 0, 0.32)) brightness(${lighting})`;
+        }
 
         leftWing.style.transform = `rotateY(${wingAngle}deg) rotateZ(${wingAngle * 0.03}deg)`;
         leftWing.style.filter = shadowFilter;
@@ -830,22 +927,24 @@ export default function ButterflyField() {
         wrapper.style.transform = `translate3d(${butterfly.x}px, ${butterfly.y + butterfly.bobY}px, 0) translate(-50%, -50%) rotate(${butterfly.rotation}deg) scale(${butterfly.size})`;
         unit.style.transform = `rotateY(${butterfly.bankAngle}deg) rotateX(${butterfly.pitchAngle}deg)`;
 
-        // Emit micro pollen/shimmer dust behind active hero flyers
+        // Emit delicate micro shimmer dust behind active hero flyers
         const currentSpd = Math.hypot(butterfly.vx, butterfly.vy);
         if (
           (index === 0 || index === 1) &&
           butterfly.state !== "perched" &&
           (currentSpd > 1.3 || butterfly.fleeTimer > 0) &&
-          Math.random() < 0.4 &&
-          trailParticles.current.length < 35
+          Math.random() < 0.28 &&
+          trailParticles.current.length < 25
         ) {
           const rad = (butterfly.rotation - 90) * (Math.PI / 180);
           trailParticles.current.push({
-            x: butterfly.x - Math.cos(rad) * 20 + (Math.random() - 0.5) * 5,
-            y: butterfly.y + butterfly.bobY - Math.sin(rad) * 20 + (Math.random() - 0.5) * 5,
-            alpha: 0.45,
-            size: Math.random() * 2.2 + 1.2,
-            color: butterfly.species === "blue_morpho" ? "rgba(56, 189, 248," : "rgba(251, 191, 36,",
+            x: butterfly.x - Math.cos(rad) * 20 + (Math.random() - 0.5) * 4,
+            y: butterfly.y + butterfly.bobY - Math.sin(rad) * 20 + (Math.random() - 0.5) * 4,
+            alpha: 0.38,
+            size: Math.random() * 1.2 + 0.6, // delicate micro-sparkle, never clunky balls
+            color: butterfly.species === "blue_morpho"
+              ? "rgba(125, 211, 252,"
+              : "rgba(253, 224, 71,",
           });
         }
       });
@@ -857,13 +956,14 @@ export default function ButterflyField() {
        */
       if (ctx && canvas) {
         const context = ctx;
+        const isNight = isNightRef.current;
         context.clearRect(0, 0, width, height);
 
-        // 1. Golden & Cyan Pollen Dust Trails
+        // 1. Delicate Pollen Dust Trails (Fades quickly, never lingers as dots)
         for (let i = trailParticles.current.length - 1; i >= 0; i--) {
           const p = trailParticles.current[i];
-          p.alpha -= 0.016 * dt;
-          p.y += 0.12 * dt;
+          p.alpha -= 0.035 * dt; // fast, graceful fade
+          p.y += 0.08 * dt;
           if (p.alpha <= 0) {
             trailParticles.current.splice(i, 1);
           } else {
@@ -931,6 +1031,78 @@ export default function ButterflyField() {
 
           context.restore();
         });
+
+        // 3. Dedicated Living Night Fireflies (Smoothly active only in Night Mode)
+        const targetFireflyAlpha = isNight ? 1 : 0;
+        fireflyAlphaRef.current += (targetFireflyAlpha - fireflyAlphaRef.current) * 0.08 * dt;
+
+        if (fireflyAlphaRef.current > 0.01) {
+          const globalFfAlpha = fireflyAlphaRef.current;
+          firefliesRef.current.forEach((ff) => {
+            // Organic pulsing rhythm (breathing glow)
+            ff.pulsePhase += ff.pulseSpeed * dt;
+            const rawPulse = Math.sin(ff.pulsePhase);
+            const pulseIntensity = Math.pow(Math.max(0, rawPulse), 2.2);
+
+            // Gentle wandering & hovering drift
+            ff.wanderAngle += (Math.random() - 0.5) * 0.16 * dt;
+            const speed = 0.3 + Math.sin(ff.pulsePhase * 0.5) * 0.12;
+            ff.vx += (Math.cos(ff.wanderAngle) * speed - ff.vx) * 0.05 * dt;
+            ff.vy += (Math.sin(ff.wanderAngle) * speed - 0.05 - ff.vy) * 0.05 * dt;
+
+            // Interactive cursor disturbance
+            if (mouse.isOver) {
+              const fdx = ff.x - mouse.x;
+              const fdy = ff.y - mouse.y;
+              const fDist = Math.hypot(fdx, fdy);
+              if (fDist < 100 && fDist > 0) {
+                const repel = (1 - fDist / 100) * 0.75;
+                ff.x += (fdx / fDist) * repel * dt;
+                ff.y += (fdy / fDist) * repel * dt;
+              }
+            }
+
+            ff.x += ff.vx * dt;
+            ff.y += ff.vy * dt;
+
+            // Wrap edges
+            if (ff.x < -20) ff.x = width + 15;
+            if (ff.x > width + 20) ff.x = -15;
+            if (ff.y < height * 0.2) {
+              ff.y = height + 10;
+              ff.x = Math.random() * width;
+            }
+            if (ff.y > height + 25) {
+              ff.y = height * 0.35;
+            }
+
+            const currentBrightness = Math.max(0.06, pulseIntensity) * globalFfAlpha;
+            if (currentBrightness < 0.02) return;
+
+            const r = ff.size;
+
+            // Soft radial ambient aura
+            context.save();
+            const glowRadius = r * 5.2;
+            const grad = context.createRadialGradient(ff.x, ff.y, 0, ff.x, ff.y, glowRadius);
+            grad.addColorStop(0, `${ff.color} ${0.5 * currentBrightness})`);
+            grad.addColorStop(0.4, `${ff.color} ${0.18 * currentBrightness})`);
+            grad.addColorStop(1, `${ff.color} 0)`);
+            context.fillStyle = grad;
+            context.beginPath();
+            context.arc(ff.x, ff.y, glowRadius, 0, Math.PI * 2);
+            context.fill();
+
+            // Inner bright core
+            context.beginPath();
+            context.arc(ff.x, ff.y, r * 0.85, 0, Math.PI * 2);
+            context.fillStyle = `rgba(255, 255, 255, ${0.9 * currentBrightness})`;
+            context.shadowColor = ff.glowColor;
+            context.shadowBlur = 8;
+            context.fill();
+            context.restore();
+          });
+        }
       }
 
       mouse.vx *= 0.88;
@@ -993,14 +1165,14 @@ export default function ButterflyField() {
               }}
               className={`relative pointer-events-none select-none ${
                 index === 0
-                  ? "w-16 sm:w-20 md:w-24"
+                  ? "w-18 sm:w-22 md:w-26"
                   : index === 1
-                  ? "w-14 sm:w-16 md:w-20"
+                  ? "w-16 sm:w-20 md:w-24"
                   : index === 2
-                  ? "w-11 sm:w-13 md:w-16"
+                  ? "w-15 sm:w-18 md:w-22"
                   : index === 3
-                  ? "w-7 sm:w-9 md:w-11"
-                  : "w-4 sm:w-5 md:w-6"
+                  ? "w-14 sm:w-17 md:w-20"
+                  : "w-14 sm:w-16 md:w-19"
               }`}
               style={{
                 aspectRatio: "956 / 625",
