@@ -24,7 +24,7 @@ export default function ServiceFit() {
   };
 
   return (
-    <section className="py-24 px-6 border-b border-white/[0.06] bg-slate-950/60 relative">
+    <section id="fit" className="py-24 px-6 border-b border-white/[0.06] bg-slate-950/60 relative scroll-mt-24 sm:scroll-mt-28">
       <div className="max-w-7xl mx-auto text-left">
 
         {/* Section Header */}
@@ -59,8 +59,17 @@ export default function ServiceFit() {
             <motion.div
               key={idx}
               variants={cardVariants}
+              role="button"
+              tabIndex={0}
+              aria-label={`View specifications for ${item.recommendedService}`}
               onClick={() => handleScrollTo(item.anchorId)}
-              className="group rounded-2xl border border-white/[0.08] bg-slate-900/40 p-7 flex flex-col justify-between hover:border-cyan-400/50 hover:bg-slate-900/70 hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.5),0_0_24px_rgba(34,211,238,0.12)] transition-all duration-300 cursor-pointer relative overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleScrollTo(item.anchorId);
+                }
+              }}
+              className="group rounded-2xl border border-white/[0.08] bg-slate-900/40 p-7 flex flex-col justify-between hover:border-cyan-400/50 hover:bg-slate-900/70 hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.5),0_0_24px_rgba(34,211,238,0.12)] transition-all duration-300 cursor-pointer relative overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
             >
               {/* Left accent bar on hover */}
               <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

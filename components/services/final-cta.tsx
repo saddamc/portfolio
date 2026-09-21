@@ -8,14 +8,18 @@ import Link from 'next/link';
 export default function FinalCta() {
   const [copied, setCopied] = useState(false);
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText('saddam13bd@gmail.com');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText('saddam13bd@gmail.com');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      window.location.href = 'mailto:saddam13bd@gmail.com';
+    }
   };
 
   return (
-    <section id="final-cta" className="py-28 px-6 relative overflow-hidden bg-slate-950 text-center">
+    <section id="final-cta" className="py-28 px-6 relative overflow-hidden bg-slate-950 text-center scroll-mt-24 sm:scroll-mt-28">
       {/* Subtle ambient lighting flare */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-b from-cyan-500/10 via-blue-500/5 to-transparent blur-[140px] rounded-full pointer-events-none" />
 

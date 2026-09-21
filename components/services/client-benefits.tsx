@@ -37,7 +37,7 @@ const comparisons = [
 
 export default function ClientBenefits() {
   return (
-    <section className="py-24 px-6 border-b border-white/[0.06] relative">
+    <section id="benefits" className="py-24 px-6 border-b border-white/[0.06] relative scroll-mt-24 sm:scroll-mt-28">
       <div className="max-w-7xl mx-auto">
         
         {/* Top Header & 6 Engineering Guarantees */}
@@ -121,13 +121,18 @@ export default function ClientBenefits() {
 
         {/* High-Converting Comparison Table: Direct Senior Builder vs Agency */}
         <div className="p-8 sm:p-10 rounded-3xl border border-white/[0.08] bg-slate-900/30 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] text-left">
-          <div className="max-w-2xl mb-8">
-            <span className="text-xs font-mono text-cyan-400 tracking-wider uppercase font-semibold block mb-2">
-              WHY CHOOSE A DEDICATED SENIOR ENGINEER
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div>
+              <span className="text-xs font-mono text-cyan-400 tracking-wider uppercase font-semibold block mb-2">
+                WHY CHOOSE A DEDICATED SENIOR ENGINEER
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                Working With Me vs. Traditional Agencies
+              </h3>
+            </div>
+            <span className="sm:hidden text-[11px] font-mono text-zinc-400 bg-white/[0.03] px-2.5 py-1 rounded-full border border-white/[0.06] shrink-0 self-start">
+              ← Scroll to compare →
             </span>
-            <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-              Working With Me vs. Traditional Agencies
-            </h3>
           </div>
 
           <div className="overflow-x-auto">

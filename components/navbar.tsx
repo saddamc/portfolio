@@ -144,7 +144,7 @@ export default function Navbar() {
             : (isDarkCanvas ? 'border border-white/10 bg-white/5 backdrop-blur-md' : 'glass')
         }`}>
           {navItems.map((item) => {
-            const isActive = (item.href.startsWith('/#') && activeSection === item.id) || pathname === item.href;
+            const isActive = (pathname === '/' && item.href.startsWith('/#') && activeSection === item.id) || pathname === item.href;
             return (
               <Link
                 key={item.name}
@@ -271,7 +271,7 @@ export default function Navbar() {
               className="mt-4 rounded-3xl p-4 glass-strong border border-border/40 shadow-xl flex flex-col gap-2.5"
             >
               {navItems.map((item) => {
-                const isActive = (item.href.startsWith('/#') && activeSection === item.id) || pathname === item.href;
+                const isActive = (pathname === '/' && item.href.startsWith('/#') && activeSection === item.id) || pathname === item.href;
                 return (
                   <Link
                     key={item.name}

@@ -25,7 +25,7 @@ const cardVariants = {
 
 export default function TechStack() {
   return (
-    <section className="py-24 px-6 border-b border-white/[0.06] bg-slate-950/40 relative">
+    <section id="tech-stack" className="py-24 px-6 border-b border-white/[0.06] bg-slate-950/40 relative scroll-mt-24 sm:scroll-mt-28">
       <div className="max-w-7xl mx-auto text-left">
 
         {/* Section Heading */}

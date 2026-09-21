@@ -17,7 +17,7 @@ const stepVariants = {
 
 export default function ProcessSection() {
   return (
-    <section id="process" className="py-24 px-6 border-b border-white/[0.06] bg-slate-950/60 relative">
+    <section id="process" className="py-24 px-6 border-b border-white/[0.06] bg-slate-950/60 relative scroll-mt-24 sm:scroll-mt-28">
       <div className="max-w-7xl mx-auto text-left">
 
         {/* Section Header */}
@@ -42,8 +42,8 @@ export default function ProcessSection() {
 
         {/* Desktop Connected Flow (Horizontal 5-step grid) */}
         <div className="hidden lg:block relative mb-12">
-          {/* Subtle horizontal connecting line */}
-          <div className="absolute top-[32px] left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-cyan-500/40 via-blue-500/40 to-indigo-500/40 z-0 overflow-hidden">
+          {/* Subtle horizontal connecting line passing through node centers */}
+          <div className="absolute top-[48px] left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-cyan-500/40 via-blue-500/40 to-indigo-500/40 z-0 overflow-hidden">
             {/* Animated Energy Flow */}
             <motion.div
               animate={{ x: ['-100%', '200%'] }}

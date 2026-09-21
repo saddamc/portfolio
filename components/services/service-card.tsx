@@ -23,8 +23,17 @@ export default function ServiceCard({ service, onExplore }: ServiceCardProps) {
 
   return (
     <article
+      role="button"
+      tabIndex={0}
+      aria-label={`View full specifications and deliverables for ${service.title}`}
       onClick={() => onExplore(service.anchorId)}
-      className="group relative rounded-2xl border border-white/[0.08] bg-slate-900/40 backdrop-blur-xl p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:border-cyan-400/50 hover:bg-slate-900/75 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_30px_rgba(34,211,238,0.12),inset_0_1px_0_0_rgba(255,255,255,0.18)] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] cursor-pointer text-left overflow-hidden h-full"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onExplore(service.anchorId);
+        }
+      }}
+      className="group relative rounded-2xl border border-white/[0.08] bg-slate-900/40 backdrop-blur-xl p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:border-cyan-400/50 hover:bg-slate-900/75 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_30px_rgba(34,211,238,0.12),inset_0_1px_0_0_rgba(255,255,255,0.18)] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] cursor-pointer text-left overflow-hidden h-full focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
     >
       {/* Top radiant accent line that reveals on hover */}
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />

@@ -215,8 +215,29 @@ export default function FeaturedService() {
                 )}
 
                 {activeTab === 'code' && (
-                  <div className="p-4 font-mono text-[11px] leading-relaxed text-zinc-300 overflow-x-auto">
-                    <pre className="text-cyan-300/90 whitespace-pre-wrap">{sampleCode}</pre>
+                  <div className="p-4 font-mono text-[11px] leading-relaxed overflow-x-auto select-none bg-slate-950/80">
+                    <div className="flex gap-3 text-left">
+                      <div className="text-right select-none text-zinc-600 text-[10px] space-y-0.5 select-none shrink-0">
+                        <div>01</div><div>02</div><div>03</div><div>04</div><div>05</div><div>06</div><div>07</div><div>08</div><div>09</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div>
+                      </div>
+                      <div className="text-zinc-300 space-y-0.5 font-mono text-xs whitespace-pre">
+                        <div><span className="text-zinc-500">{'// Production Type-Safe Server Action'}</span></div>
+                        <div><span className="text-purple-400">export async function</span> <span className="text-cyan-300">createOrder</span>(data: <span className="text-amber-300">OrderInput</span>) {'{'}</div>
+                        <div>  <span className="text-purple-400">const</span> session = <span className="text-purple-400">await</span> <span className="text-blue-300">authGuard</span>(Role.<span className="text-emerald-400">OPERATOR</span>);</div>
+                        <div>  <span className="text-purple-400">const</span> validated = OrderSchema.<span className="text-blue-300">parse</span>(data);</div>
+                        <div> </div>
+                        <div>  <span className="text-purple-400">const</span> result = <span className="text-purple-400">await</span> db.order.<span className="text-blue-300">create</span>({'{'}</div>
+                        <div>    data: {'{'}</div>
+                        <div>      ...validated,</div>
+                        <div>      assignedTo: session.userId,</div>
+                        <div>      status: <span className="text-emerald-300">&quot;DISPATCH_READY&quot;</span>,</div>
+                        <div>      auditTrail: {'{'} create: {'{'} event: <span className="text-emerald-300">&quot;CREATED&quot;</span> {'}'} {'}'}</div>
+                        <div>    {'}'}</div>
+                        <div>  {'}'});</div>
+                        <div>  <span className="text-purple-400">return</span> {'{'} success: <span className="text-cyan-300">true</span>, trackingNumber: result.id {'}'};</div>
+                        <div>{'}'}</div>
+                      </div>
+                    </div>
                   </div>
                 )}
 

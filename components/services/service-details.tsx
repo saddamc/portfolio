@@ -14,6 +14,15 @@ const serviceIcons: Record<string, React.ElementType> = {
   'maintenance': Wrench,
 };
 
+const serviceShortNames: Record<string, string> = {
+  'full-stack': 'Full-Stack',
+  'ecommerce': 'E-Commerce',
+  'saas': 'SaaS',
+  'business-apps': 'Business Apps',
+  'api-backend': 'APIs & Backend',
+  'maintenance': 'Maintenance',
+};
+
 const serviceTimelines: Record<string, string> = {
   'full-stack': '3–6 Weeks',
   'ecommerce': '2–4 Weeks',
@@ -42,7 +51,7 @@ export default function ServiceDetails() {
   };
 
   return (
-    <section id="service-details" className="py-24 px-6 border-b border-white/[0.06] relative">
+    <section id="service-details" className="py-24 px-6 border-b border-white/[0.06] relative scroll-mt-24 sm:scroll-mt-28">
       <div className="max-w-7xl mx-auto text-left">
 
         {/* Section Heading */}
@@ -75,7 +84,7 @@ export default function ServiceDetails() {
                 onClick={() => handleScrollTo(s.anchorId)}
                 className="px-3 py-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] hover:border-cyan-400/40 text-[11px] font-mono text-zinc-400 hover:text-white transition-all cursor-pointer"
               >
-                {s.number}. {s.title.split(' ')[0]}
+                {s.number}. {serviceShortNames[s.id] || s.title}
               </button>
             ))}
           </div>
@@ -135,16 +144,11 @@ export default function ServiceDetails() {
                     href={`https://wa.me/8801974544443?text=${encodeURIComponent(service.whatsappMessage)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="shrink-0"
+                    className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/[0.05] hover:bg-white text-white hover:text-slate-950 text-xs font-mono font-bold transition-all duration-300 cursor-pointer group/btn shadow-[0_4px_15px_rgba(0,0,0,0.3)]"
                   >
-                    <button
-                      type="button"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/[0.05] hover:bg-white text-white hover:text-slate-950 text-xs font-mono font-bold transition-all duration-300 cursor-pointer group/btn shadow-[0_4px_15px_rgba(0,0,0,0.3)]"
-                    >
-                      <MessageCircle className="w-4 h-4 text-cyan-400 group-hover/btn:text-slate-950 transition-colors" />
-                      <span>INQUIRE ABOUT THIS</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
-                    </button>
+                    <MessageCircle className="w-4 h-4 text-cyan-400 group-hover/btn:text-slate-950 transition-colors" />
+                    <span>INQUIRE ABOUT THIS</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
                   </a>
                 </div>
 

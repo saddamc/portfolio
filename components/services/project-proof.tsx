@@ -42,7 +42,7 @@ const cardVariants = {
 
 export default function ProjectProof() {
   return (
-    <section id="proof" className="py-24 px-6 border-b border-white/[0.06] relative">
+    <section id="proof" className="py-24 px-6 border-b border-white/[0.06] relative scroll-mt-24 sm:scroll-mt-28">
       <div className="max-w-7xl mx-auto text-left">
 
         {/* Section Header */}

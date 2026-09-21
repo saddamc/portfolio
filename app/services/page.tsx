@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 
@@ -15,32 +15,18 @@ import ProjectProof from '@/components/services/project-proof';
 import ServiceFit from '@/components/services/service-fit';
 import FaqSection from '@/components/services/faq-section';
 import FinalCta from '@/components/services/final-cta';
+import ServicesAmbientLight from '@/components/services/services-ambient-light';
 
 export default function ServicesPage() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setPosition({
-      x: e.clientX,
-      y: e.clientY,
-    });
-  };
-
   return (
     <div
-      onMouseMove={handleMouseMove}
       className="min-h-screen bg-slate-950 text-white font-sans selection:bg-cyan-500/20 relative overflow-hidden"
     >
       {/* Existing Global Navbar */}
       <Navbar />
 
-      {/* Subtle Ambient Mouse Follower Light */}
-      <div
-        className="pointer-events-none fixed inset-0 z-30 transition-opacity duration-300 opacity-60 hidden md:block"
-        style={{
-          background: `radial-gradient(700px at ${position.x}px ${position.y}px, rgba(34,211,238,0.06), transparent 80%)`,
-        }}
-      />
+      {/* Zero-rerender Ambient Mouse Spotlight */}
+      <ServicesAmbientLight />
 
       {/* Background Architectural Canvas Grid Lines */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">

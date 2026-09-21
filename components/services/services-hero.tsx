@@ -70,14 +70,11 @@ export default function ServicesHero() {
 
             {/* Editorial Main Heading */}
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] mb-6">
-              <span className="sr-only">Services</span>
-              <span aria-hidden="true">
-                I BUILD <br />
-                <span className="bg-gradient-to-r from-white via-cyan-100 to-cyan-300 bg-clip-text text-transparent">
-                  DIGITAL PRODUCTS
-                </span> <br />
-                <span className="text-zinc-400 font-light">THAT WORK.</span>
-              </span>
+              I BUILD <br />
+              <span className="bg-gradient-to-r from-white via-cyan-100 to-cyan-300 bg-clip-text text-transparent">
+                DIGITAL PRODUCTS
+              </span> <br />
+              <span className="text-zinc-400 font-light">THAT WORK.</span>
             </h1>
 
             {/* Positioning Statement */}

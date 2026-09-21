@@ -13,7 +13,7 @@ import { Sparkles, MessageCircle, ArrowRight } from 'lucide-react';
 
 export default function FaqSection() {
   return (
-    <section id="faq" className="py-24 px-6 border-b border-white/[0.06] relative">
+    <section id="faq" className="py-24 px-6 border-b border-white/[0.06] relative scroll-mt-24 sm:scroll-mt-28">
       <div className="max-w-4xl mx-auto text-left">
 
         {/* Section Header */}

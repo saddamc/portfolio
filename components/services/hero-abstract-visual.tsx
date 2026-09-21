@@ -12,7 +12,7 @@ export default function HeroAbstractVisual() {
       tag: 'Edge SSR • 99 Lighthouse',
       color: 'text-cyan-400',
       bgGlow: 'from-cyan-500/10',
-      position: 'top-6 -left-4 sm:-left-6',
+      position: 'top-3 left-2 sm:top-6 sm:-left-6',
       animDelay: 0,
     },
     {
@@ -21,7 +21,7 @@ export default function HeroAbstractVisual() {
       tag: 'REST & Webhooks',
       color: 'text-blue-400',
       bgGlow: 'from-blue-500/10',
-      position: 'top-1/3 -right-4 sm:-right-8',
+      position: 'top-1/3 right-2 sm:-right-8',
       animDelay: 0.8,
     },
     {
@@ -30,7 +30,7 @@ export default function HeroAbstractVisual() {
       tag: 'Prisma ORM • ACID Safe',
       color: 'text-emerald-400',
       bgGlow: 'from-emerald-500/10',
-      position: 'bottom-8 -left-2 sm:-left-4',
+      position: 'bottom-4 left-2 sm:bottom-8 sm:-left-4',
       animDelay: 1.6,
     },
   ];
@@ -202,7 +202,7 @@ export default function HeroAbstractVisual() {
             ease: 'easeInOut',
             delay: card.animDelay,
           }}
-          className={`absolute ${card.position} z-20 flex items-center gap-3 px-4 py-2.5 rounded-xl border border-white/[0.12] bg-slate-900/85 backdrop-blur-xl shadow-[0_12px_30px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-cyan-400/40 transition-colors pointer-events-auto`}
+          className={`absolute ${card.position} z-20 flex items-center gap-2.5 sm:gap-3 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-white/[0.12] bg-slate-900/90 backdrop-blur-xl shadow-[0_12px_30px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-cyan-400/40 transition-colors pointer-events-auto max-w-[220px] sm:max-w-none`}
         >
           <div className={`p-2 rounded-lg bg-white/[0.04] border border-white/[0.08] ${card.color}`}>
             <card.icon className="w-4 h-4" />

@@ -31,7 +31,7 @@ export default function ServiceOverview() {
     : services.filter((s) => s.id === activeCategory);
 
   return (
-    <section id="services-overview" className="py-24 px-6 border-b border-white/[0.06] relative">
+    <section id="services-overview" className="py-24 px-6 border-b border-white/[0.06] relative scroll-mt-24 sm:scroll-mt-28">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
@@ -62,7 +62,7 @@ export default function ServiceOverview() {
         </div>
 
         {/* Interactive Filter Pills */}
-        <div className="flex flex-wrap gap-2 mb-10 pb-2 overflow-x-auto scrollbar-none">
+        <div className="flex flex-wrap items-center gap-2 mb-10 pb-2 overflow-x-auto scrollbar-none">
           {filterCategories.map((cat) => (
             <button
               key={cat.id}
@@ -76,6 +76,14 @@ export default function ServiceOverview() {
               {cat.label}
             </button>
           ))}
+          {activeCategory !== 'all' && (
+            <button
+              onClick={() => setActiveCategory('all')}
+              className="px-3 py-1.5 rounded-full text-[11px] font-mono text-cyan-400 hover:text-cyan-300 border border-cyan-500/30 bg-cyan-500/10 transition-colors cursor-pointer"
+            >
+              ✕ Reset to All (6)
+            </button>
+          )}
         </div>
 
         {/* 6 Editorial Service Cards */}
